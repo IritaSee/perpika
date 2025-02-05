@@ -35,6 +35,9 @@ export const baseSchema = z.object({
   proofOfPayment: z.string().min(1, {
     message: "Payment proof must be uploaded",
   }),
+  agreeToTerms: z.boolean({
+    required_error: "You must agree to the terms and conditions",
+  }),
 })
 
 // Schema for individual presenter

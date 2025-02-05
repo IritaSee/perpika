@@ -1,11 +1,20 @@
 import RegisterEventForm from "./register-event-form";
+import Image from "next/image";
 
 
 export default function RegisterEventPage() {
   return (
-    <div className="container min-h-screen w-full py-4 md:py-8">
+    <div className=" min-h-screen w-full py-4 md:py-8">
       <div className="mx-auto w-full max-w-[600px] space-y-6">
-        <div className="flex flex-col space-y-3 text-center">
+        <div className="flex flex-col items-center space-y-3 text-center">
+          <Image
+            src="/perpika.png"
+            alt="Perpika Logo"
+            width={180}
+            height={40}
+            className="mb-4 h-auto w-auto"
+            priority
+          />
           <h1 className="text-3xl font-bold tracking-tight text-primary">
             ICONIK 2025 Registration
           </h1>

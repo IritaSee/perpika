@@ -14,6 +14,7 @@ import { uploadFile } from "@/lib/upload"
 import { useState, useEffect, useMemo } from "react"
 import { Card } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Checkbox } from "@/components/ui/checkbox"
 
 // First 35 online participants are free
 const MAX_FREE_ONLINE_PARTICIPANTS = 35
@@ -189,6 +190,48 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
           )}
         </div>
       </div>
+
+      <div className="mb-6">
+        <FormLabel>Bank Account Information</FormLabel>
+        <Card className="p-4">
+          <p className="text-sm font-medium">Bank: [Bank Name]</p>
+          <p className="text-sm">Account Number: [Account Number]</p>
+          <p className="text-sm">Account Holder: [Account Holder Name]</p>
+        </Card>
+      </div>
+
+      <FormField
+        control={form.control}
+        name="agreeToTerms"
+        render={({ field }) => (
+          <FormItem className="mb-6">
+            <div className="flex items-center space-x-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <label
+                  htmlFor="agreeToTerms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Terms and Conditions
+                </label>
+                <p className="text-sm text-muted-foreground">
+                  I agree to the{" "}
+                  <a href="/terms" className="text-primary hover:underline">
+                    terms and conditions
+                  </a>{" "}
+                  of the event registration.
+                </p>
+              </div>
+            </div>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <FormField
         control={form.control}
