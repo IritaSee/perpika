@@ -1,6 +1,7 @@
 "use client"
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { User, Mail, GraduationCap, Utensils, Users, Globe } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UseFormReturn } from "react-hook-form"
@@ -15,10 +16,23 @@ interface ParticipantFormProps {
 
 export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Part 3: Participant Information</h2>
-      
-      <FormField
+    <div className="border-b p-6 md:p-8">
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <Users className="h-5 w-5" />
+          <h2 className="text-xl font-semibold">Participant Information</h2>
+        </div>
+        <p className="mt-1 text-sm text-muted-foreground">Enter your personal details to register as a participant</p>
+      </div>
+
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            <h3 className="text-sm font-medium text-muted-foreground">Personal Information</h3>
+          </div>
+          
+          <FormField
         control={form.control}
         name="fullName"
         render={({ field }) => (
@@ -32,9 +46,9 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="gender"
+          <FormField
+            control={form.control}
+            name="gender"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Gender</FormLabel>
@@ -54,23 +68,46 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="nationality"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nationality</FormLabel>
-            <FormControl>
-              <Input placeholder="Enter nationality" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+          <FormField
+            control={form.control}
+            name="nationality"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nationality</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select nationality" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Indonesia">Indonesia</SelectItem>
+                    <SelectItem value="Malaysia">Malaysia</SelectItem>
+                    <SelectItem value="Singapore">Singapore</SelectItem>
+                    <SelectItem value="Thailand">Thailand</SelectItem>
+                    <SelectItem value="Vietnam">Vietnam</SelectItem>
+                    <SelectItem value="Philippines">Philippines</SelectItem>
+                    <SelectItem value="Japan">Japan</SelectItem>
+                    <SelectItem value="South Korea">South Korea</SelectItem>
+                    <SelectItem value="China">China</SelectItem>
+                    <SelectItem value="India">India</SelectItem>
+                    <SelectItem value="Australia">Australia</SelectItem>
+                    <SelectItem value="United States">United States</SelectItem>
+                    <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                    <SelectItem value="Germany">Germany</SelectItem>
+                    <SelectItem value="France">France</SelectItem>
+                    <SelectItem value="Netherlands">Netherlands</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <FormField
-        control={form.control}
-        name="cityState"
+          <FormField
+            control={form.control}
+            name="cityState"
         render={({ field }) => (
           <FormItem>
             <FormLabel>City/State</FormLabel>
@@ -82,9 +119,17 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="email"
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Mail className="h-4 w-4" />
+            <h3 className="text-sm font-medium text-muted-foreground">Contact Details</h3>
+          </div>
+          
+          <FormField
+            control={form.control}
+            name="email"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Email</FormLabel>
@@ -96,9 +141,17 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="currentStatus"
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="h-4 w-4" />
+            <h3 className="text-sm font-medium text-muted-foreground">Academic Information</h3>
+          </div>
+          
+          <FormField
+            control={form.control}
+            name="currentStatus"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Current Status</FormLabel>
@@ -121,9 +174,9 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="affiliation"
+          <FormField
+            control={form.control}
+            name="affiliation"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Affiliation/Organization/Institution</FormLabel>
@@ -135,10 +188,18 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
         )}
       />
 
-      {sessionType === SessionType.OFFLINE && (
-        <FormField
-          control={form.control}
-          name="dietaryPreference"
+        </div>
+
+        {sessionType === SessionType.OFFLINE && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Utensils className="h-4 w-4" />
+              <h3 className="text-sm font-medium text-muted-foreground">Additional Preferences</h3>
+            </div>
+            
+            <FormField
+              control={form.control}
+              name="dietaryPreference"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dietary Preference</FormLabel>
@@ -149,15 +210,17 @@ export function ParticipantForm({ form, sessionType }: ParticipantFormProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={DietaryPreference.VEGAN}>Vegan (Rice + Fried Tempeh)</SelectItem>
+                  <SelectItem value={DietaryPreference.VEGAN}>Vegan (Rice + Indonesian Stir-Fried Tempe)</SelectItem>
                   <SelectItem value={DietaryPreference.HALAL}>Halal (Rice + Grilled Chicken)</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
           )}
-        />
-      )}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

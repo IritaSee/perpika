@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useState } from "react"
+import { Presentation, Users, Globe, Building, Info } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -34,6 +35,7 @@ export default function RegisterEventForm() {
       sessionType: undefined,
       registrationType: undefined,
       proofOfPayment: "",
+      presenters: [{ name: "", nationality: "" }], // Initialize with one empty presenter
     },
   })
 
@@ -42,12 +44,18 @@ export default function RegisterEventForm() {
   }
 
   return (
-    <Card className="p-6">
+    <Card className="overflow-hidden border-muted bg-card">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Part 1: Basic Information</h2>
-            
+          <div className="space-y-6 border-b p-6 md:p-8">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Info className="h-5 w-5" />
+                <h2 className="text-xl font-semibold tracking-tight">Basic Information</h2>
+              </div>
+              <p className="text-sm text-muted-foreground">Choose how you would like to participate in ICONIK 2025</p>
+            </div>
+
             <FormField
               control={form.control}
               name="attendingAs"
@@ -61,22 +69,22 @@ export default function RegisterEventForm() {
                         setAttendingAs(value)
                       }}
                       defaultValue={field.value}
-                      className="flex flex-col space-y-1"
+                      className="flex flex-col space-y-3"
                     >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormItem className="group flex items-center space-x-3 space-y-0 rounded-lg border p-4 hover:bg-accent transition-colors">
                         <FormControl>
                           <RadioGroupItem value={AttendingAs.PRESENTER} />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Presenter
+                        <FormLabel className="flex w-full cursor-pointer items-center gap-2 font-medium group-hover:text-accent-foreground">
+                          <Presentation className="h-4 w-4" /> Presenter
                         </FormLabel>
                       </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormItem className="group flex items-center space-x-3 space-y-0 rounded-lg border p-4 hover:bg-accent transition-colors">
                         <FormControl>
                           <RadioGroupItem value={AttendingAs.PARTICIPANT} />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Participant
+                        <FormLabel className="flex w-full cursor-pointer items-center gap-2 font-medium group-hover:text-accent-foreground">
+                          <Users className="h-4 w-4" /> Participant
                         </FormLabel>
                       </FormItem>
                     </RadioGroup>
@@ -101,20 +109,20 @@ export default function RegisterEventForm() {
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormItem className="group flex items-center space-x-3 space-y-0 rounded-lg border p-4 hover:bg-accent transition-colors">
                         <FormControl>
                           <RadioGroupItem value={SessionType.ONLINE} />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Online
+                        <FormLabel className="flex w-full cursor-pointer items-center gap-2 font-medium group-hover:text-accent-foreground">
+                          <Globe className="h-4 w-4" /> Online
                         </FormLabel>
                       </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormItem className="group flex items-center space-x-3 space-y-0 rounded-lg border p-4 hover:bg-accent transition-colors">
                         <FormControl>
                           <RadioGroupItem value={SessionType.OFFLINE} />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Offline
+                        <FormLabel className="flex w-full cursor-pointer items-center gap-2 font-medium group-hover:text-accent-foreground">
+                          <Building className="h-4 w-4" /> Offline
                         </FormLabel>
                       </FormItem>
                     </RadioGroup>
@@ -141,9 +149,11 @@ export default function RegisterEventForm() {
             />
           )}
 
-          <Button type="submit" className="w-full">
+          <div className="border-t p-6 md:p-8">
+            <Button type="submit" className="w-full">
             Register Event
-          </Button>
+            </Button>
+          </div>
         </form>
       </Form>
     </Card>

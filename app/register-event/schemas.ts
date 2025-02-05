@@ -37,14 +37,17 @@ export const baseSchema = z.object({
   }),
 })
 
+// Schema for individual presenter
+const presenterSchema = z.object({
+  name: z.string().min(1, { message: "Presenter name is required" }),
+  nationality: z.string().min(1, { message: "Presenter nationality is required" }),
+})
+
 // Schema for presenter-specific fields
-export const presenterSchema = z.object({
-  firstAuthorName: z.string().min(1, { message: "First author name is required" }),
-  firstAuthorNationality: z.string().min(1, { message: "First author nationality is required" }),
-  secondAuthorName: z.string().optional(),
-  secondAuthorNationality: z.string().optional(),
-  thirdAuthorName: z.string().optional(),
-  thirdAuthorNationality: z.string().optional(),
+export const presenterRegistrationSchema = z.object({
+  presenters: z.array(presenterSchema)
+    .min(1, { message: "At least one presenter is required" })
+    .max(3, { message: "Maximum of three presenters allowed" }),
   email: z.string().email({ message: "Invalid email format" }),
   currentStatus: z.enum([
     CurrentStatus.BACHELOR_STUDENT,
@@ -104,7 +107,7 @@ export const formSchema = z.discriminatedUnion("attendingAs", [
   z.object({
     attendingAs: z.literal(AttendingAs.PRESENTER),
     ...baseSchemaWithoutAttending,
-    ...presenterSchema.shape,
+    ...presenterRegistrationSchema.shape,
   }),
   z.object({
     attendingAs: z.literal(AttendingAs.PARTICIPANT),
