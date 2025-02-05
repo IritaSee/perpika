@@ -23,3 +23,115 @@ model User {
 
   @@map("users")
 }
+
+// Define enums for the various fixed-option fields
+enum AttendingAs {
+  PRESENTER
+  PARTICIPANT
+}
+
+enum SessionType {
+  ONLINE
+  OFFLINE
+}
+
+enum CurrentStatus {
+  BACHELOR_STUDENT
+  MASTER_STUDENT
+  PHD_STUDENT
+  RESEARCHER_PROFESSIONAL
+  OTHER
+}
+
+enum TopicPreference {
+  ENGINEERING
+  HEALTH_SCIENCE
+  LIFE_SCIENCE
+  EARTH_SCIENCE
+  MATERIAL_SCIENCE
+  SOCIAL_LAW_POLITICAL_SCIENCE
+  HUMANITIES
+  SPORTS_AND_ARTS
+  BUSINESS_PUBLIC_ADMINISTRATION
+  EDUCATION
+}
+
+enum DietaryPreference {
+  VEGAN          // (Rice + Indonesian Stir-Fried Tempe)
+  HALAL          // (Rice + grilled chicken)
+}
+
+enum Gender {
+  FEMALE
+  MALE
+}
+
+enum RegistrationType {
+  ONLINE_PARTICIPANT_ONE_DAY
+  ONLINE_PARTICIPANT_TWO_DAYS
+  OFFLINE_PARTICIPANT_ONE_DAY
+  OFFLINE_PARTICIPANT_TWO_DAYS
+  PRESENTER_INDONESIA_STUDENT_ONLINE
+  PRESENTER_INDONESIA_STUDENT_OFFLINE
+  PRESENTER_FOREIGNER_ONLINE
+  PRESENTER_FOREIGNER_OFFLINE
+}
+
+// The main registration record holds Section 1 and Section 4 fields.
+model Registration {
+  id               Int                 @id @default(autoincrement())
+  attendingAs      AttendingAs
+  sessionType      SessionType
+  
+  // Section 4: Registration Fee details
+  registrationType RegistrationType
+  proofOfPayment   String              // Store a file URL or path
+
+  // One-to-one relations: depending on the "attendingAs" value, one of these will be present.
+  presenterRegistration PresenterRegistration?
+  participantRegistration ParticipantRegistration?
+}
+
+// For presenters (Section 2)
+model PresenterRegistration {
+  id                     Int              @id @default(autoincrement())
+  registrationId         Int              @unique
+  registration           Registration     @relation(fields: [registrationId], references: [id])
+  
+  // Section 2 fields
+  firstAuthorName        String
+  firstAuthorNationality String
+  secondAuthorName       String?          // optional if only one author
+  secondAuthorNationality String?         // optional
+  thirdAuthorName        String?          // optional
+  thirdAuthorNationality String?          // optional
+
+  email                  String
+  currentStatus          CurrentStatus
+  affiliation            String           // Affiliation/Organization/Institution
+  topicPreference        TopicPreference
+  presentationTitle      String
+  abstractSubmission     String           // file upload (PDF file path or URL)
+
+  // Dietary preference is only applicable if the session type is OFFLINE.
+  dietaryPreference      DietaryPreference?
+}
+
+// For participants (Section 3)
+model ParticipantRegistration {
+  id              Int              @id @default(autoincrement())
+  registrationId  Int              @unique
+  registration    Registration     @relation(fields: [registrationId], references: [id])
+  
+  // Section 3 fields
+  fullName        String
+  gender          Gender
+  nationality     String
+  cityState       String           // City/State
+  email           String
+  currentStatus   CurrentStatus
+  affiliation     String           // Affiliation/Organization/Institution
+
+  // Dietary preference if attending offline
+  dietaryPreference DietaryPreference?
+}
