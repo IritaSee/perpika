@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 
-
 declare module "next-auth" {
   interface Session {
     user: {
@@ -75,5 +74,4 @@ export const authOptions: AuthOptions = {
 }
 
 const handler = NextAuth(authOptions)
-
 export { handler as GET, handler as POST }

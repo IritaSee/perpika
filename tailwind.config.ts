@@ -9,6 +9,12 @@ export default {
   ],
   theme: {
   	extend: {
+      backgroundImage: {
+        'dot-pattern': 'radial-gradient(circle, #1e293b 1px, transparent 1px)',
+      },
+      backgroundSize: {
+        'dot-pattern': '28px 28px',
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

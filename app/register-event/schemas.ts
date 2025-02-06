@@ -32,9 +32,18 @@ export const baseSchema = z.object({
   ], {
     required_error: "Please select your registration type",
   }),
-  proofOfPayment: z.string().min(1, {
-    message: "Payment proof must be uploaded",
-  }),
+  proofOfPayment: z.string()
+    .refine((val) => {
+      // If the value is empty, it's valid only for free registration
+      if (!val) {
+        // This will be checked in the form context
+        return true;
+      }
+      // For non-empty values, must be a valid URL
+      return val.startsWith('http');
+    }, {
+      message: "Payment proof must be uploaded"
+    }),
   agreeToTerms: z.boolean({
     required_error: "You must agree to the terms and conditions",
   }),

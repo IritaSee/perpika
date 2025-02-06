@@ -10,7 +10,6 @@ import { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import { AttendingAs, SessionType, RegistrationType } from "../constants"
 import { formSchema } from "../schemas"
-import { uploadFile } from "@/lib/upload"
 import { useState, useEffect, useMemo } from "react"
 import { Card } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -76,11 +75,20 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
     return true // Default to Indonesian pricing
   }, [formValues, attendingAs])
 
-  // Initialize registration type
+  // Initialize registration type and handle validation
   useEffect(() => {
     if (!attendingAs || !sessionType) return
 
     let newRegistrationType: keyof typeof REGISTRATION_FEES | null = null
+    let isFreeRegistration = false
+
+    // Watch for form changes
+    const subscription = form.watch((value, { name, type }) => {
+      if (name === 'proofOfPayment' && currentFee === 0) {
+        // Clear validation errors for free registration
+        form.clearErrors('proofOfPayment')
+      }
+    })
 
     if (attendingAs === AttendingAs.PARTICIPANT) {
       if (sessionType === SessionType.ONLINE) {
@@ -112,9 +120,18 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
       }
       const fees = REGISTRATION_FEES[newRegistrationType]
       if (fees) {
-        setCurrentFee(isEarlyBirdPeriod ? fees.earlyBird : fees.regular)
+        const fee = isEarlyBirdPeriod ? fees.earlyBird : fees.regular
+        setCurrentFee(fee)
+        isFreeRegistration = fee === 0
+
+        // If it's free registration, clear any existing validation errors
+        if (isFreeRegistration) {
+          form.clearErrors('proofOfPayment')
+        }
       }
     }
+
+    return () => subscription.unsubscribe()
   }, [attendingAs, sessionType, days, isIndonesianStudent, form, isEarlyBirdPeriod])
 
   return (
@@ -200,6 +217,7 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
         </Card>
       </div>
 
+
       <FormField
         control={form.control}
         name="agreeToTerms"
@@ -232,7 +250,6 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
           </FormItem>
         )}
       />
-
       <FormField
         control={form.control}
         name="registrationType"
@@ -254,15 +271,26 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
             {!field.value ? (
               <FormControl>
                 <FileUpload
-                  onChange={async (files) => {
-                    if (files[0]) {
-                      try {
-                        const url = await uploadFile(files[0], 'payment-proofs')
-                        field.onChange(url)
-                      } catch (error) {
-                        console.error('Upload failed:', error)
-                      }
+                  onChange={(downloadURL) => {
+                    // Skip for free registration
+                    if (currentFee === 0) {
+                      field.onChange('');
+                      form.clearErrors('proofOfPayment');
+                      return;
                     }
+                    
+                    // Update form field value
+                    field.onChange(downloadURL);
+                    
+                    // Update form context
+                    form.setValue('proofOfPayment', downloadURL, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                      shouldTouch: true
+                    });
+                    
+                    // Force validation
+                    form.trigger('proofOfPayment');
                   }}
                 />
               </FormControl>

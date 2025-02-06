@@ -1,32 +1,61 @@
 import RegisterEventForm from "./register-event-form";
 import Image from "next/image";
+import { CalendarDays, MapPin } from "lucide-react";
 
 
 export default function RegisterEventPage() {
   return (
-    <div className=" min-h-screen w-full py-4 md:py-8">
-      <div className="mx-auto w-full max-w-[600px] space-y-6">
-        <div className="flex flex-col items-center space-y-3 text-center">
-          <Image
-            src="/perpika.png"
-            alt="Perpika Logo"
-            width={180}
-            height={40}
-            className="mb-4 h-auto w-auto"
-            priority
-          />
-          <h1 className="text-3xl font-bold tracking-tight text-primary">
-            ICONIK 2025 Registration
-          </h1>
-          <p className="text-base text-muted-foreground">
-            International Conference by Indonesian Students in Korea
-          </p>
-          <div className="mt-2">
-            <p className="text-base font-medium">1 August 2025 • Woosong University, Daejon</p>
-            <p className="mt-3 text-sm text-muted-foreground leading-relaxed">Join us in exploring education, technology, entrepreneurship, social justice, and sustainable development towards Indonesia Emas 2045.</p>
+    <div className="relative min-h-screen w-full overflow-hidden bg-dot-pattern">
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background"></div>
+      
+      <div className="relative mx-auto w-full max-w-[600px] px-4 py-12 md:py-16">
+        <div className="relative rounded-2xl bg-card/30 backdrop-blur-sm">
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2">
+            <div className="relative h-24 w-24 overflow-hidden rounded-2xl border-4 border-background shadow-xl">
+              <Image
+                src="/perpika.png"
+                alt="Perpika Logo"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center px-6 pt-16 text-center md:px-8">
+            <div className="space-y-4 pb-8">
+              <div className="space-y-2">
+                <h1 className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl">
+                  ICONIK 2025
+                </h1>
+                <p className="text-lg font-medium text-muted-foreground">
+                  International Conference by Indonesian Students in Korea
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center gap-2 pt-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <CalendarDays className="h-4 w-4 text-primary" />
+                  <span>1 August 2025</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span>Woosong University, Daejon</span>
+                </div>
+              </div>
+
+              <div className="mx-auto max-w-md pt-4">
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Join us in exploring education, technology, entrepreneurship, social justice, and sustainable development towards Indonesia Emas 2045.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-        <RegisterEventForm />
+
+        <div className="mt-8">
+          <RegisterEventForm />
+        </div>
       </div>
     </div>
   )

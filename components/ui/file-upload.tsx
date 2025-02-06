@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const mainVariant = {
   initial: {
@@ -28,14 +30,47 @@ const secondaryVariant = {
 export const FileUpload = ({
   onChange,
 }: {
-  onChange?: (files: File[]) => void;
+  onChange?: (downloadURL: string) => void;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (newFiles: File[]) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    onChange && onChange(newFiles);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFileChange = async (newFiles: File[]) => {
+    if (newFiles.length === 0) return;
+    
+    try {
+      setIsUploading(true);
+      setError(null);
+      setFiles(newFiles);
+      const file = newFiles[0]; // We only handle single file
+      
+      // Create a reference to the file in Firebase Storage
+      const fileName = `${Date.now()}-${file.name}`;
+      const storageRef = ref(storage, `uploads/${fileName}`);
+      
+      // Upload the file
+      const snapshot = await uploadBytes(storageRef, file);
+      
+      // Get the download URL
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      
+      console.log('File uploaded successfully:', downloadURL);
+      
+      // Pass the download URL to parent
+      if (onChange) {
+        onChange(downloadURL);
+      }
+    } catch (error: any) {
+      console.error('Error uploading file:', error);
+      setError(error?.message || 'Error uploading file');
+      // Clear the files state on error
+      setFiles([]);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleClick = () => {
@@ -45,9 +80,12 @@ export const FileUpload = ({
   const { getRootProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
+    accept: {
+      'image/*': ['.png', '.jpg', '.jpeg']
+    },
     onDrop: handleFileChange,
     onDropRejected: (error) => {
-      console.log(error);
+      console.error('File upload rejected:', error);
     },
   });
 
@@ -56,19 +94,32 @@ export const FileUpload = ({
       <motion.div
         onClick={handleClick}
         whileHover="animate"
-        className="p-10 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden"
+        className={cn(
+          "p-10 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden",
+          isUploading && "opacity-50 cursor-not-allowed"
+        )}
       >
         <input
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          accept="image/*"
+          onChange={(e) => {
+            const files = Array.from(e.target.files || []);
+            console.log('FileUpload: Files selected:', files);
+            handleFileChange(files);
+          }}
           className="hidden"
         />
         <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
           <GridPattern />
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center relative">
+          {error && (
+            <p className="text-red-500 text-sm absolute -top-6 left-0 right-0 text-center">
+              {error}
+            </p>
+          )}
           <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-base">
             Upload file
           </p>
