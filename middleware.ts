@@ -3,8 +3,7 @@ import { NextResponse } from "next/server"
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/((?!login|register-event|api/auth|_next/static|_next/image|favicon.ico).*)"
+    "/dashboard/:path*"
   ]
 }
 
