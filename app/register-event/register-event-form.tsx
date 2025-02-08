@@ -6,6 +6,7 @@ import * as z from "zod"
 import { useEffect, useState, useTransition } from "react"
 import { Presentation, Users, Globe, Building, Info } from "lucide-react"
 import { toast, Toaster } from "sonner"
+import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -99,6 +100,11 @@ export default function RegisterEventForm() {
   return (
     <>
       <Toaster />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
       <Card className="overflow-hidden border rounded-lg shadow-sm bg-card">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -228,6 +234,7 @@ export default function RegisterEventForm() {
         </form>
       </Form>
     </Card>
+    </motion.div>
     </>
   )
 }

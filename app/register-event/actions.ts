@@ -3,6 +3,7 @@
 import { db } from '@/lib/db'
 import { formSchema } from './schemas'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export async function registerEvent(formData: FormData) {
   try {
@@ -75,7 +76,8 @@ export async function registerEvent(formData: FormData) {
     })
 
     revalidatePath('/register-event')
-    
+    redirect('/register-event/thank-you')
+
     return { success: true, data: registration }
   } catch (error: any) {
     console.error('Registration error:', error)
