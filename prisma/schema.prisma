@@ -77,6 +77,12 @@ enum RegistrationType {
   PRESENTER_FOREIGNER_OFFLINE    // KRW 275,000
 }
 
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
 // Model for registration fees
 model RegistrationFee {
   id               Int              @id @default(autoincrement())
@@ -97,6 +103,7 @@ model Registration {
   // Section 4: Registration Fee details
   registrationType RegistrationType
   proofOfPayment   String              // Store a file URL or path
+  paymentStatus    PaymentStatus       @default(PENDING)
 
   // One-to-one relations: depending on the "attendingAs" value, one of these will be present.
   presenterRegistration PresenterRegistration?

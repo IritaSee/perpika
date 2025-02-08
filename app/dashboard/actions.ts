@@ -1,12 +1,13 @@
 'use server'
 
-import { db } from "@/lib/db"
-import { revalidatePath } from "next/cache"
-import { 
-  AttendingAs, 
-  SessionType, 
-  RegistrationType, 
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import {
+  AttendingAs,
+  SessionType,
+  RegistrationType,
   CurrentStatus,
+  PaymentStatus,
   TopicPreference,
   DietaryPreference,
   Gender
@@ -60,23 +61,43 @@ export async function getRegistrationById(id: number) {
   }
 }
 
-export async function updateRegistration(id: number, data: {
-  attendingAs?: AttendingAs
-  sessionType?: SessionType
-  registrationType?: RegistrationType
-  proofOfPayment?: string
-}) {
+export async function updateRegistration(
+  id: number,
+  data: {
+    attendingAs?: AttendingAs;
+    sessionType?: SessionType;
+    registrationType?: RegistrationType;
+    proofOfPayment?: string;
+  }
+) {
   try {
     const registration = await db.registration.update({
       where: { id },
-      data
-    })
-    revalidatePath("/dashboard")
-    return { success: true, data: registration }
+      data,
+    });
+    revalidatePath("/dashboard");
+    return { success: true, data: registration };
   } catch (error: any) {
-    console.error("Gagal memperbarui registrasi:", error)
-    return { success: false, error: error.message }
+    console.error("Gagal memperbarui registrasi:", error);
+    return { success: false, error: error.message };
   }
+}
+
+export async function updatePaymentStatus(
+  id: number,
+  paymentStatus: PaymentStatus
+) {
+    try {
+        const registration = await db.registration.update({
+            where: { id },
+            data: { paymentStatus },
+        });
+        revalidatePath("/dashboard");
+        return { success: true, data: registration };
+    } catch (error: any) {
+        console.error("Gagal memperbarui status pembayaran:", error);
+        return { success: false, error: error.message };
+    }
 }
 
 export async function deleteRegistration(id: number) {

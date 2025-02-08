@@ -27,7 +27,8 @@ export async function registerEvent(formData: FormData) {
         sessionType: validatedData.sessionType,
         registrationType: validatedData.registrationType,
         proofOfPayment: validatedData.proofOfPayment,
-        
+        paymentStatus: 'PENDING', // Add paymentStatus and set to PENDING
+
         // Create the appropriate registration type based on attendingAs
         ...(validatedData.attendingAs === 'PRESENTER' ? {
           presenterRegistration: {

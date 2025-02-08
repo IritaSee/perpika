@@ -3,7 +3,8 @@ import { redirect } from "next/navigation"
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import { LogoutButton } from "@/components/auth/logout-button"
 import { Button } from "@/components/ui/button"
-import { DeleteRegistrationButton } from "@/app/dashboard/components/DeleteRegistrationButton"
+import { DeleteRegistrationButton } from "@/app/dashboard/components/DeleteRegistrationButton";
+import { UpdatePaymentStatusButton } from "./components/UpdatePaymentStatusButton";
 
 import {
   Card,
@@ -174,25 +175,32 @@ export default async function DashboardPage({
                   <TableHead>Sesi</TableHead>
                   <TableHead>Afiliasi</TableHead>
                   <TableHead>Detail</TableHead>
+                  <TableHead>Status Pembayaran</TableHead>
                   <TableHead>Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {registrations.map((registration) => {
-                  const details = registration.presenterRegistration || registration.participantRegistration
-                  const name = registration.presenterRegistration 
-                    ? registration.presenterRegistration.presenters[0]?.name 
-                    : registration.participantRegistration?.fullName
+                  const details =
+                    registration.presenterRegistration ||
+                    registration.participantRegistration;
+                  const name = registration.presenterRegistration
+                    ? registration.presenterRegistration.presenters[0]?.name
+                    : registration.participantRegistration?.fullName;
                   const email = registration.presenterRegistration
                     ? registration.presenterRegistration.email
-                    : registration.participantRegistration?.email
-                  
+                    : registration.participantRegistration?.email;
+
                   return (
                     <TableRow key={registration.id}>
-                      <TableCell className="font-medium">{registration.id}</TableCell>
+                      <TableCell className="font-medium">
+                        {registration.id}
+                      </TableCell>
                       <TableCell>
                         <div className="font-medium">{name}</div>
-                        <div className="text-sm text-muted-foreground">{email}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {email}
+                        </div>
                       </TableCell>
                       <TableCell>{registration.attendingAs}</TableCell>
                       <TableCell>{details?.currentStatus}</TableCell>
@@ -201,15 +209,27 @@ export default async function DashboardPage({
                       <TableCell>
                         {registration.presenterRegistration && (
                           <div className="text-sm">
-                            <div>Topik: {registration.presenterRegistration.topicPreference}</div>
+                            <div>
+                              Topik:{" "}
+                              {registration.presenterRegistration.topicPreference}
+                            </div>
                             <div className="text-muted-foreground">
-                              {registration.presenterRegistration.presentationTitle}
+                              {
+                                registration.presenterRegistration
+                                  .presentationTitle
+                              }
                             </div>
                           </div>
                         )}
                         {registration.participantRegistration && (
                           <div className="text-sm">
-                            <div>Kewarganegaraan: {registration.participantRegistration.nationality}</div>
+                            <div>
+                              Kewarganegaraan:{" "}
+                              {
+                                registration.participantRegistration
+                                  .nationality
+                              }
+                            </div>
                             <div className="text-muted-foreground">
                               {registration.participantRegistration.cityState}
                             </div>
@@ -217,10 +237,18 @@ export default async function DashboardPage({
                         )}
                       </TableCell>
                       <TableCell>
-                        <DeleteRegistrationButton registrationId={registration.id} />
+                        <UpdatePaymentStatusButton
+                          registrationId={registration.id}
+                          currentStatus={registration.paymentStatus}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <DeleteRegistrationButton
+                          registrationId={registration.id}
+                        />
                       </TableCell>
                     </TableRow>
-                  )
+                  );
                 })}
               </TableBody>
             </Table>
@@ -228,5 +256,5 @@ export default async function DashboardPage({
         </Card>
       </div>
     </div>
-  )
+  );
 }
