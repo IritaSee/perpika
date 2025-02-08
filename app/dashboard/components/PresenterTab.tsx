@@ -24,6 +24,62 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FileUpload } from "@/components/ui/file-upload";
+import { Badge } from "@/components/ui/badge";
+import Flag from 'react-world-flags';
+import { Edit, Trash2 } from "lucide-react";
+
+
+// Helper function to map country name to code (from ParticipantTab)
+function getCountryCode(countryName: string | undefined): string {
+  if (!countryName) {
+    return '';
+  }
+  const countryMap: { [key: string]: string } = {
+    "Indonesia": "ID",
+    "Malaysia": "MY",
+    "Singapore": "SG",
+    "Thailand": "TH",
+    "Vietnam": "VN",
+    "Philippines": "PH",
+    "Japan": "JP",
+    "South Korea": "KR",
+    "China": "CN",
+    "India": "IN",
+    "Australia": "AU",
+    "United States": "US",
+    "United Kingdom": "GB",
+    "Germany": "DE",
+    "France": "FR",
+    "Netherlands": "NL",
+    "Other": ""
+  };
+
+  return countryMap[countryName] || ''; // Return empty string if not found
+}
+
+// Helper function to map status (adapted from ParticipantTab)
+function getStatusLabel(status: string | undefined) {
+  switch (status) {
+    case "WAITING_FOR_PAYMENT":
+      return "Waiting for Payment";
+    case "REGISTERED":
+      return "Registered";
+    case "-":
+      return "Incomplete";
+    case "BACHELOR_STUDENT":
+      return "Bachelor Student";
+    case "MASTER_STUDENT":
+      return "Master Student";
+    case "PHD_STUDENT":
+      return "PhD Student";
+    case "RESEARCHER_PROFESSIONAL":
+      return "Researcher/Professional";
+    case "OTHER":
+      return "Other";
+    default:
+      return status || "Unknown";
+  }
+}
 
 interface PresenterTabProps {
   registrations: RegistrationWithRelations[];
@@ -45,14 +101,13 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Nama/Email</TableHead>
-              <TableHead>Tipe</TableHead>
+              <TableHead>Name/Email</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Sesi</TableHead>
-              <TableHead>Afiliasi</TableHead>
-              <TableHead>Detail</TableHead>
-              <TableHead>Status Pembayaran</TableHead>
-              <TableHead>Aksi</TableHead>
+              <TableHead>Session</TableHead>
+              <TableHead>Affiliation</TableHead>
+              <TableHead>Details</TableHead>
+              <TableHead>Payment Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -73,46 +128,55 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                       {registration.id}
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium">{name}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="flex items-center gap-x-1">
+                        
+                        <div className="font-medium">{name}</div>
+                        <Badge>{registration.attendingAs}</Badge>
+                      </div>
+                      <div className="text-sm flex items-center gap-x-1 text-muted-foreground">
                         {email}
+                        {registration.presenterRegistration && (
+                          <Checkbox
+                            checked={
+                              registration.presenterRegistration
+                                .isAbstractReviewed
+                            }
+                            onCheckedChange={async (checked) => {
+                              if (typeof checked === "boolean") {
+                                const result =
+                                  await updateAbstractReviewedStatus(
+                                    registration.presenterRegistration!.id,
+                                    checked
+                                  );
+                                if (!result.success) {
+                                  alert(
+                                    "Failed to update abstract reviewed status"
+                                  );
+                                }
+                              }
+                            }}
+                          />
+                        )}
                       </div>
                     </TableCell>
-                    <TableCell>{registration.attendingAs}</TableCell>
-                    <TableCell>{details?.currentStatus}</TableCell>
+                    <TableCell>{getStatusLabel(details?.currentStatus)}</TableCell>
                     <TableCell>{registration.sessionType}</TableCell>
                     <TableCell>{details?.affiliation}</TableCell>
                     <TableCell>
                       {registration.presenterRegistration && (
                         <div className="text-sm">
-                          <div>
-                            Topik:{" "}
-                            {registration.presenterRegistration.topicPreference}
+                          <div className="flex items-center gap-x-1">
+                            <div>
+                              Topic:{" "}
+                              {registration.presenterRegistration.topicPreference}
+                            </div>
+                            <Flag code={getCountryCode(registration.presenterRegistration.presenters[0]?.nationality)} className="h-4 w-auto" fallback={<span>{registration.presenterRegistration.presenters[0]?.nationality}</span>} />
                           </div>
                           <div className="text-muted-foreground">
                             {registration.presenterRegistration.presentationTitle}
                           </div>
-                          <div>
-                            <Checkbox
-                              checked={
-                                registration.presenterRegistration
-                                  .isAbstractReviewed
-                              }
-                              onCheckedChange={async (checked) => {
-                                if (typeof checked === "boolean") {
-                                  const result =
-                                    await updateAbstractReviewedStatus(
-                                      registration.presenterRegistration!.id,
-                                      checked
-                                    );
-                                  if (!result.success) {
-                                    alert(
-                                      "Failed to update abstract reviewed status"
-                                    );
-                                  }
-                                }
-                              }}
-                            />
+                           <div>
+                            Presenters: {registration.presenterRegistration.presenters.map(p => p.name).join(', ')} ({registration.presenterRegistration.presenters.length})
                           </div>
                         </div>
                       )}
@@ -124,9 +188,12 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                       />
                     </TableCell>
                     <TableCell>
-                      <Dialog>
+                    <div className="flex gap-x-1">
+                    <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline">Update Abstract</Button>
+                          <Button variant="outline" size="icon">
+                            <Edit className="h-4 w-4" />
+                          </Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
@@ -154,9 +221,17 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                             )}
                         </DialogContent>
                       </Dialog>
-                      <DeleteRegistrationButton
-                        registrationId={registration.id}
-                      />
+                      <form method="post" action="/api/registrations/delete" onSubmit={(e) => {
+                        if (!confirm("Apakah anda yakin untuk menghapus?")) {
+                          e.preventDefault();
+                        }
+                      }}>
+                        <input type="hidden" name="id" value={registration.id} />
+                        <Button variant="destructive" type="submit" size="icon">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </form>
+                    </div>
                     </TableCell>
                   </TableRow>
                 );
