@@ -57,6 +57,26 @@ function getCountryCode(countryName: string | undefined): string {
   return countryMap[countryName] || ''; // Return empty string if not found
 }
 
+// Helper function to map topic preference
+function getTopicLabel(topic: string | undefined): string {
+    if (!topic) {
+        return '';
+    }
+    const topicMap: { [key: string]: string } = {
+        "ENGINEERING": "Engineering",
+        "HEALTH_SCIENCE": "Health Science",
+        "LIFE_SCIENCE": "Life Science",
+        "EARTH_SCIENCE": "Earth Science",
+        "MATERIAL_SCIENCE": "Material Science",
+        "SOCIAL_LAW_POLITICAL_SCIENCE": "Social, Law & Political Science",
+        "HUMANITIES": "Humanities",
+        "SPORTS_AND_ARTS": "Sports & Arts",
+        "BUSINESS_PUBLIC_ADMINISTRATION": "Business & Public Administration",
+        "EDUCATION": "Education"
+    }
+    return topicMap[topic] || '';
+}
+
 // Helper function to map status (adapted from ParticipantTab)
 function getStatusLabel(status: string | undefined) {
   switch (status) {
@@ -168,7 +188,7 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                           <div className="flex items-center gap-x-1">
                             <div>
                               Topic:{" "}
-                              {registration.presenterRegistration.topicPreference}
+                              {getTopicLabel(registration.presenterRegistration.topicPreference)}
                             </div>
                             <Flag code={getCountryCode(registration.presenterRegistration.presenters[0]?.nationality)} className="h-4 w-auto" fallback={<span>{registration.presenterRegistration.presenters[0]?.nationality}</span>} />
                           </div>
