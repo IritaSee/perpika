@@ -2,78 +2,74 @@
 import { PaymentStatus } from "@prisma/client";
 import { updatePaymentStatus } from "../actions";
 import { Button } from "@/components/ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface UpdatePaymentStatusButtonProps {
-    registrationId: number;
-    currentStatus: PaymentStatus;
+  registrationId: number;
+  currentStatus: PaymentStatus;
 }
 
 export function UpdatePaymentStatusButton({
-    registrationId,
-    currentStatus
+  registrationId,
+  currentStatus,
 }: UpdatePaymentStatusButtonProps) {
-    const [status, setStatus] = useState(currentStatus)
-    const [open, setOpen] = useState(false)
-    const [selectedStatus, setSelectedStatus] = useState<PaymentStatus | null>(null)
+  const [status, setStatus] = useState(currentStatus);
 
-    return (
-        <>
-            <AlertDialog open={open} onOpenChange={setOpen}>
-                <AlertDialogTrigger asChild>
-                    <Button variant="outline">
-                        {status}
-                    </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Ubah Status Pembayaran</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Pilih status pembayaran baru:
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <div className="flex space-x-2">
-                        <Button variant={selectedStatus === "CONFIRMED" ? "default" : "outline"} onClick={() => setSelectedStatus("CONFIRMED")}>
-                            Confirmed
-                        </Button>
-                        <Button variant={selectedStatus === "PENDING" ? "default" : "outline"} onClick={() => setSelectedStatus("PENDING")}>
-                            Pending
-                        </Button>
-                        <Button variant={selectedStatus === "REJECTED" ? "destructive" : "outline"} onClick={() => setSelectedStatus("REJECTED")}>
-                            Rejected
-                        </Button>
+  async function updateStatus(newStatus: PaymentStatus) {
+    const result = await updatePaymentStatus(registrationId, newStatus);
+    if (result.success) {
+      setStatus(newStatus);
+    } else {
+      alert("Gagal memperbarui status pembayaran.");
+    }
+  }
 
-                    </div>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={async () => {
-                            if (selectedStatus) {
-                              const result = await updatePaymentStatus(registrationId, selectedStatus);
-                              if (result.success) {
-                                setStatus(selectedStatus);
-                                setOpen(false)
-                              }
-                            }
-                          }}
-                        >
-                            Simpan
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+  const statusColors: Record<PaymentStatus, string> = {
+    PENDING: "bg-yellow-100 text-yellow-800",
+    CONFIRMED: "bg-green-100 text-green-800",
+    REJECTED: "bg-red-100 text-red-800",
+  };
 
-        </>
-    )
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className={`${statusColors[status]} border-none`}
+        >
+          {status}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Ubah Status</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onSelect={() => updateStatus("PENDING")}
+          className={statusColors["PENDING"]}
+        >
+          PENDING
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => updateStatus("CONFIRMED")}
+          className={statusColors["CONFIRMED"]}
+        >
+          CONFIRMED
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => updateStatus("REJECTED")}
+          className={statusColors["REJECTED"]}
+        >
+          REJECTED
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }

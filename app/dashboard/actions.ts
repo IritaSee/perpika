@@ -151,10 +151,38 @@ export async function deleteRegistration(id: number) {
   }
 }
 
+export async function updateAbstractFile(id: number, abstractSubmission: string) {
+    try {
+        const presenterReg = await db.presenterRegistration.update({
+            where: { id },
+            data: { abstractSubmission }
+        });
+        revalidatePath("/dashboard");
+        return { success: true, data: presenterReg };
+    } catch (error: any) {
+        console.error("Failed to update abstract file:", error);
+        return { success: false, error: error.message };
+  }
+}
+
+export async function updateAbstractReviewedStatus(id: number, isAbstractReviewed: boolean) {
+    try {
+        const presenterReg = await db.presenterRegistration.update({
+            where: { id },
+            data: { isAbstractReviewed }
+        });
+        revalidatePath("/dashboard");
+        return { success: true, data: presenterReg };
+    } catch (error: any) {
+        console.error("Failed to update abstract reviewed status:", error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Presenter Registration CRUD
 export async function updatePresenterRegistration(id: number, data: {
-  email?: string
-  currentStatus?: CurrentStatus
+  email?: string;
+  currentStatus?: CurrentStatus;
   affiliation?: string
   topicPreference?: TopicPreference
   presentationTitle?: string

@@ -125,7 +125,7 @@ model PresenterRegistration {
   
   // Dietary preference is only applicable if the session type is OFFLINE.
   dietaryPreference      DietaryPreference?
-  
+  isAbstractReviewed     Boolean          @default(false)
   // Relation to presenters
   presenters             Presenter[]
 }

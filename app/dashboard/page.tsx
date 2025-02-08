@@ -1,10 +1,8 @@
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
-import { authOptions } from "../api/auth/[...nextauth]/route"
-import { LogoutButton } from "@/components/auth/logout-button"
-import { Button } from "@/components/ui/button"
-import { DeleteRegistrationButton } from "@/app/dashboard/components/DeleteRegistrationButton";
-import { UpdatePaymentStatusButton } from "./components/UpdatePaymentStatusButton";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { LogoutButton } from "@/components/auth/logout-button";
+
 
 import {
   Card,
@@ -12,8 +10,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { db } from "@/lib/db"
+} from "@/components/ui/card";
+import { db } from "@/lib/db";
 import {
   Table,
   TableBody,
@@ -21,101 +19,92 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { RegistrationFilters } from "./components/registration-filters"
-import { Suspense } from "react"
-import { 
-  AttendingAs, 
-  SessionType, 
-  Registration, 
-  PresenterRegistration, 
-  ParticipantRegistration,
-  Presenter
-} from "@prisma/client"
-
-
-type RegistrationWithRelations = Registration & {
-  presenterRegistration: (PresenterRegistration & {
-    presenters: Presenter[]
-  }) | null
-  participantRegistration: ParticipantRegistration | null
-}
+} from "@/components/ui/table";
+import { RegistrationFilters } from "./components/registration-filters";
+import { Suspense } from "react";
+import { AttendingAs, SessionType } from "@prisma/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ParticipantTab } from "./components/ParticipantTab";
+import { PresenterTab } from "./components/PresenterTab";
+import { PaymentStatusTab } from "./components/PaymentStatusTab";
+import { AbstractTab } from "./components/AbstractTab";
+import { RegistrationWithRelations } from "../types";
 
 type SearchParams = {
-  search?: string
-  type?: AttendingAs
-  session?: SessionType
-}
+  search?: string;
+  type?: AttendingAs;
+  session?: SessionType;
+};
 
 interface PageProps {
-  searchParams: SearchParams
+  searchParams: SearchParams;
 }
 
-export default async function DashboardPage({
-  searchParams,
-}: PageProps) {
-  const session = await getServerSession(authOptions)
+export default async function DashboardPage({ searchParams }: PageProps) {
+  const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/login")
+    redirect("/login");
   }
 
-  // Get searchParams values
-  const params = await Promise.resolve(searchParams)
-  
-  // Get filtered registrations
-  const registrations: RegistrationWithRelations[] = await db.registration.findMany({
-    where: {
-      AND: [
-        params.type
-          ? { attendingAs: params.type }
-          : {},
-        params.session
-          ? { sessionType: params.session }
-          : {},
-        params.search
-          ? {
-              OR: [
-                {
-                  presenterRegistration: {
-                    OR: [
-                      { email: { contains: params.search, mode: 'insensitive' } },
-                      { presenters: { some: { name: { contains: params.search, mode: 'insensitive' } } } }
-                    ]
+    // Get searchParams values
+    const params = await Promise.resolve(searchParams)
+
+    // Get filtered registrations
+    const registrations: RegistrationWithRelations[] = await db.registration.findMany({
+      where: {
+        AND: [
+          params.type
+            ? { attendingAs: params.type }
+            : {},
+          params.session
+            ? { sessionType: params.session }
+            : {},
+          params.search
+            ? {
+                OR: [
+                  {
+                    presenterRegistration: {
+                      OR: [
+                        { email: { contains: params.search, mode: 'insensitive' } },
+                        { presenters: { some: { name: { contains: params.search, mode: 'insensitive' } } } }
+                      ]
+                    }
+                  },
+                  {
+                    participantRegistration: {
+                      OR: [
+                        { email: { contains: params.search, mode: 'insensitive' } },
+                        { fullName: { contains: params.search, mode: 'insensitive' } }
+                      ]
+                    }
                   }
-                },
-                {
-                  participantRegistration: {
-                    OR: [
-                      { email: { contains: params.search, mode: 'insensitive' } },
-                      { fullName: { contains: params.search, mode: 'insensitive' } }
-                    ]
-                  }
-                }
-              ]
-            }
-          : {},
-      ],
-    },
-    include: {
-      presenterRegistration: {
-        include: {
-          presenters: true,
-        },
+                ]
+              }
+            : {},
+        ],
       },
-      participantRegistration: true,
-    },
-    orderBy: {
-      id: 'desc'
-    }
-  })
+      include: {
+        presenterRegistration: {
+          include: {
+            presenters: true,
+          },
+        },
+        participantRegistration: true,
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    })
 
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Dashboard Admin</h1>
-          <p className="text-muted-foreground mt-2">Kelola semua pendaftaran peserta</p>
+          <p className="text-muted-foreground mt-2">
+            Kelola semua pendaftaran peserta
+          </p>
         </div>
         <LogoutButton />
       </div>
@@ -124,6 +113,7 @@ export default async function DashboardPage({
         <Suspense>
           <RegistrationFilters />
         </Suspense>
+
         {/* Stats Card */}
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
@@ -140,7 +130,7 @@ export default async function DashboardPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {registrations.filter(r => r.attendingAs === 'PRESENTER').length}
+                {registrations.filter((r) => r.attendingAs === "PRESENTER").length}
               </div>
             </CardContent>
           </Card>
@@ -150,110 +140,31 @@ export default async function DashboardPage({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {registrations.filter(r => r.attendingAs === 'PARTICIPANT').length}
+                {registrations.filter((r) => r.attendingAs === "PARTICIPANT").length}
               </div>
             </CardContent>
           </Card>
         </div>
-
-        {/* Registrations Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Daftar Pendaftar</CardTitle>
-            <CardDescription>
-              Daftar semua pendaftar yang telah mendaftar untuk acara
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Nama/Email</TableHead>
-                  <TableHead>Tipe</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Sesi</TableHead>
-                  <TableHead>Afiliasi</TableHead>
-                  <TableHead>Detail</TableHead>
-                  <TableHead>Status Pembayaran</TableHead>
-                  <TableHead>Aksi</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {registrations.map((registration) => {
-                  const details =
-                    registration.presenterRegistration ||
-                    registration.participantRegistration;
-                  const name = registration.presenterRegistration
-                    ? registration.presenterRegistration.presenters[0]?.name
-                    : registration.participantRegistration?.fullName;
-                  const email = registration.presenterRegistration
-                    ? registration.presenterRegistration.email
-                    : registration.participantRegistration?.email;
-
-                  return (
-                    <TableRow key={registration.id}>
-                      <TableCell className="font-medium">
-                        {registration.id}
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">{name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {email}
-                        </div>
-                      </TableCell>
-                      <TableCell>{registration.attendingAs}</TableCell>
-                      <TableCell>{details?.currentStatus}</TableCell>
-                      <TableCell>{registration.sessionType}</TableCell>
-                      <TableCell>{details?.affiliation}</TableCell>
-                      <TableCell>
-                        {registration.presenterRegistration && (
-                          <div className="text-sm">
-                            <div>
-                              Topik:{" "}
-                              {registration.presenterRegistration.topicPreference}
-                            </div>
-                            <div className="text-muted-foreground">
-                              {
-                                registration.presenterRegistration
-                                  .presentationTitle
-                              }
-                            </div>
-                          </div>
-                        )}
-                        {registration.participantRegistration && (
-                          <div className="text-sm">
-                            <div>
-                              Kewarganegaraan:{" "}
-                              {
-                                registration.participantRegistration
-                                  .nationality
-                              }
-                            </div>
-                            <div className="text-muted-foreground">
-                              {registration.participantRegistration.cityState}
-                            </div>
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <UpdatePaymentStatusButton
-                          registrationId={registration.id}
-                          currentStatus={registration.paymentStatus}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <DeleteRegistrationButton
-                          registrationId={registration.id}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="peserta" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="peserta">Peserta</TabsTrigger>
+            <TabsTrigger value="presenter">Presenter</TabsTrigger>
+            <TabsTrigger value="status_pembayaran">Status Pembayaran</TabsTrigger>
+            <TabsTrigger value="abstrak">Abstrak</TabsTrigger>
+          </TabsList>
+          <TabsContent value="peserta">
+            <ParticipantTab registrations={registrations} />
+          </TabsContent>
+          <TabsContent value="presenter">
+            <PresenterTab registrations={registrations} />
+          </TabsContent>
+          <TabsContent value="status_pembayaran">
+            <PaymentStatusTab registrations={registrations} />
+          </TabsContent>
+          <TabsContent value="abstrak">
+            <AbstractTab registrations={registrations} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
