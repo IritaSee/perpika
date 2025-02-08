@@ -3,7 +3,6 @@
 import { db } from '@/lib/db'
 import { formSchema } from './schemas'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 export async function registerEvent(formData: FormData) {
   try {
