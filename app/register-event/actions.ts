@@ -75,14 +75,12 @@ export async function registerEvent(formData: FormData) {
       }
     })
 
-    revalidatePath('/register-event')
-    redirect('/register-event/thank-you')
-
-    return { success: true, data: registration }
+    revalidatePath('/register-event');
+    return { success: true }; // Indicate successful registration
   } catch (error: any) {
     console.error('Registration error:', error)
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error.message || 'Something went wrong'
     }
   }

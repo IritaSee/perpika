@@ -6,6 +6,7 @@ import * as z from "zod"
 import { useEffect, useState, useTransition } from "react"
 import { Presentation, Users, Globe, Building, Info } from "lucide-react"
 import { toast, Toaster } from "sonner"
+import { useRouter } from 'next/navigation'
 import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
@@ -64,38 +65,40 @@ export default function RegisterEventForm() {
     });
   }, [formState, form]);
 
+  const router = useRouter();
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setError(null)
-    
-    startTransition(async () => {
-      try {
-        const formData = new FormData()
-        
-        Object.entries(values).forEach(([key, value]) => {
-          if (key === 'presenters' && Array.isArray(value)) {
-            formData.append(key, JSON.stringify(value))
-          } else if (value !== undefined && value !== null) {
-            formData.append(key, value.toString())
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      setError(null);
+
+      startTransition(async () => {
+        try {
+          const formData = new FormData();
+
+          Object.entries(values).forEach(([key, value]) => {
+            if (key === 'presenters' && Array.isArray(value)) {
+              formData.append(key, JSON.stringify(value));
+            } else if (value !== undefined && value !== null) {
+              formData.append(key, value.toString());
+            }
+          });
+
+          const result = await registerEvent(formData);
+
+          if (result.success) {
+            toast.success('Registration submitted successfully!');
+            router.push('/register-event/thank-you');
+          } else {
+            throw new Error(result.error);
           }
-        })
 
-        const result = await registerEvent(formData)
-
-        if (!result.success) {
-          throw new Error(result.error)
+        } catch (error: any) {
+          console.error('Registration error:', error);
+          toast.error(error.message || 'Failed to submit registration');
         }
-
-        form.reset()
-        toast.success('Registration submitted successfully!')
-      } catch (error: any) {
-        console.error('Registration error:', error)
-        toast.error(error.message || 'Failed to submit registration')
-      }
-    })
-  }
+      });
+    }
 
   return (
     <>

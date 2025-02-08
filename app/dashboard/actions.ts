@@ -1,6 +1,6 @@
 'use server'
 
-import { db } from "@/lib/db";
+import { db } from "../../lib/db";
 import { revalidatePath } from "next/cache";
 import {
   AttendingAs,
@@ -112,7 +112,11 @@ export async function deleteRegistration(id: number) {
     const registration = await db.registration.findUnique({
       where: { id },
       include: {
-        presenterRegistration: true,
+        presenterRegistration: {
+          include: { // Add this include
+            presenters: true
+          }
+        },
         participantRegistration: true
       }
     })
@@ -126,6 +130,15 @@ export async function deleteRegistration(id: number) {
 
     await db.$transaction(async (tx) => {
       if (registration.presenterRegistration) {
+        // Delete associated presenters FIRST
+        if (registration.presenterRegistration.presenters) {
+          for (const presenter of registration.presenterRegistration.presenters) {
+            await tx.presenter.delete({
+              where: { id: presenter.id }
+            });
+          }
+        }
+
         await tx.presenterRegistration.delete({
           where: { id: registration.presenterRegistration.id }
         });

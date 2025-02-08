@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -5,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
   Table,
   TableBody,
@@ -14,31 +16,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DeleteRegistrationButton } from "./DeleteRegistrationButton";
-
 import { UpdatePaymentStatusButton } from "./UpdatePaymentStatusButton";
 import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
 import { updateAbstractFile, updateAbstractReviewedStatus } from "../actions";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { FileUpload } from "@/components/ui/file-upload";
 
 interface PresenterTabProps {
   registrations: RegistrationWithRelations[];
 }
 
 export function PresenterTab({ registrations }: PresenterTabProps) {
-  async function handleUpdateAbstract(id: number, file: string) {
-    const result = await updateAbstractFile(id, file);
-    if (!result.success) {
-      alert("Failed to update abstract");
-    }
-  }
-
-    async function handleReviewedChange(id: number, checked: boolean) {
-        const result = await updateAbstractReviewedStatus(id, checked);
-        if (!result.success) {
-            alert("Failed to update abstract reviewed status");
-        }
-    }
+  const [loadingId, setLoadingId] = useState<number | null>(null);
 
   return (
     <Card>
@@ -100,13 +92,28 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                           <div className="text-muted-foreground">
                             {registration.presenterRegistration.presentationTitle}
                           </div>
-                            <div>
-                                <Checkbox checked={registration.presenterRegistration.isAbstractReviewed} onCheckedChange={(checked) => {
-                                    if (typeof checked === 'boolean') {
-                                        handleReviewedChange(registration.presenterRegistration!.id, checked);
-                                    }
-                                }}/>
-                            </div>
+                          <div>
+                            <Checkbox
+                              checked={
+                                registration.presenterRegistration
+                                  .isAbstractReviewed
+                              }
+                              onCheckedChange={async (checked) => {
+                                if (typeof checked === "boolean") {
+                                  const result =
+                                    await updateAbstractReviewedStatus(
+                                      registration.presenterRegistration!.id,
+                                      checked
+                                    );
+                                  if (!result.success) {
+                                    alert(
+                                      "Failed to update abstract reviewed status"
+                                    );
+                                  }
+                                }
+                              }}
+                            />
+                          </div>
                         </div>
                       )}
                     </TableCell>
@@ -117,13 +124,36 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                       />
                     </TableCell>
                     <TableCell>
-                      <Button
-                        onClick={() =>
-                          handleUpdateAbstract(registration.id, "test")
-                        }
-                      >
-                        Update Abstract
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline">Update Abstract</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Update Abstract</DialogTitle>
+                            <DialogDescription>
+                              Upload a new abstract file (PDF).
+                            </DialogDescription>
+                          </DialogHeader>
+                          <FileUpload
+                            onChange={async (downloadURL) => {
+                                if (downloadURL) {
+                                    setLoadingId(registration.presenterRegistration!.id);
+                                    const result = await updateAbstractFile(registration.presenterRegistration!.id, downloadURL);
+                                    if (result.success) {
+                                        alert("Abstract updated successfully!");
+                                    } else {
+                                        alert("Failed to update abstract");
+                                    }
+                                    setLoadingId(null)
+                                }
+                            }}
+                          />
+                            {loadingId === registration.presenterRegistration?.id && (
+                                <p className="text-sm text-muted-foreground">Uploading...</p>
+                            )}
+                        </DialogContent>
+                      </Dialog>
                       <DeleteRegistrationButton
                         registrationId={registration.id}
                       />

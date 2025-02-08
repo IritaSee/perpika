@@ -80,9 +80,6 @@ export const FileUpload = ({
   const { getRootProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
-    accept: {
-      'image/*': ['.png', '.jpg', '.jpeg']
-    },
     onDrop: handleFileChange,
     onDropRejected: (error) => {
       console.error('File upload rejected:', error);
@@ -103,7 +100,6 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          accept="image/*"
           onChange={(e) => {
             const files = Array.from(e.target.files || []);
             console.log('FileUpload: Files selected:', files);

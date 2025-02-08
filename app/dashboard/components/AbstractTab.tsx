@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -8,6 +9,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
+import Link from 'next/link';
 
 interface AbstractTabProps {
   registrations: RegistrationWithRelations[];
@@ -35,10 +37,11 @@ export function AbstractTab({ registrations }: AbstractTabProps) {
               .filter((r) => r.attendingAs === "PRESENTER")
               .map((registration) => {
                 const name = registration.presenterRegistration
-                  ? registration.presenterRegistration.presenters[0]?.name
+                  ? registration.presenterRegistration.presenters.map(p => p.name).join(', ')
                   : "";
                 const title = registration.presenterRegistration?.presentationTitle || "";
-                const abstractPath = registration.presenterRegistration?.abstractSubmission || "";
+                const abstractPath =
+                  registration.presenterRegistration?.abstractSubmission || "";
 
                 return (
                   <TableRow key={registration.id}>
@@ -47,16 +50,15 @@ export function AbstractTab({ registrations }: AbstractTabProps) {
                     <TableCell>{title}</TableCell>
                     <TableCell>
                       {abstractPath ? (
-                        <Button
-                          variant="link"
-                          onClick={() => {
-                            if (typeof window !== 'undefined') {
-                                window.open(abstractPath, '_blank');
-                            }
-                          }}
-                        >
-                          Lihat Abstrak
-                        </Button>
+                        abstractPath === "test" ? (
+                            <p>Abstract Not Uploaded</p>
+                        ) : (
+                          <Button variant="link" asChild>
+                            <Link href={`/dashboard/abstracts/${registration.presenterRegistration?.id}`}>
+                                Lihat Abstrak
+                            </Link>
+                          </Button>
+                        )
                       ) : (
                         "Tidak ada abstrak"
                       )}
