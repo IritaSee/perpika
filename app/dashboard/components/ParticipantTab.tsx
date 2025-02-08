@@ -19,6 +19,19 @@ import { RegistrationWithRelations } from "../../types";
 import { Badge } from "@/components/ui/badge";
 import Flag from 'react-world-flags';
 
+// Helper function to map dietary preference
+function getDietaryLabel(dietaryPreference: string | undefined | null): string {
+    if (!dietaryPreference) {
+        return 'N/A';
+    }
+    const dietaryMap: { [key: string]: string } = {
+        "VEGAN": "Vegan",
+        "HALAL": "Halal"
+    }
+
+    return dietaryMap[dietaryPreference] || 'N/A';
+}
+
 // Helper function to map country name to code
 function getCountryCode(countryName: string | undefined): string {
   if (!countryName) {
@@ -86,13 +99,14 @@ export function ParticipantTab({ registrations }: ParticipantTabProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              
               <TableHead>Nama/Email</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Sesi</TableHead>
               <TableHead>Afiliasi</TableHead>
               <TableHead>Detail</TableHead>
               <TableHead>Status Pembayaran</TableHead>
+              <TableHead>Diet</TableHead>
               <TableHead>Aksi</TableHead>
             </TableRow>
           </TableHeader>
@@ -106,13 +120,12 @@ export function ParticipantTab({ registrations }: ParticipantTabProps) {
 
                 return (
                   <TableRow key={registration.id}>
-                    <TableCell className="font-medium">
-                      {registration.id}
-                    </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-x-1">
                         <div className="font-medium">{name}</div>
-                        <Badge>{registration.attendingAs}</Badge>
+                        <Badge className="bg-accent text-gray-700">
+                          {registration.attendingAs}
+                        </Badge>
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {email}
@@ -126,7 +139,20 @@ export function ParticipantTab({ registrations }: ParticipantTabProps) {
                         <div className="text-sm">
                           <div className="flex items-center gap-x-1">
                             Kewarganegaraan:{" "}
-                            <Flag code={getCountryCode(registration.participantRegistration.nationality)} className="h-4 w-auto" fallback={<span>{registration.participantRegistration.nationality}</span>} />
+                            <Flag
+                              code={getCountryCode(
+                                registration.participantRegistration.nationality
+                              )}
+                              className="h-4 w-auto"
+                              fallback={
+                                <span>
+                                  {
+                                    registration.participantRegistration
+                                      .nationality
+                                  }
+                                </span>
+                              }
+                            />
                           </div>
                           <div className="text-muted-foreground">
                             {registration.participantRegistration.cityState}
@@ -141,9 +167,14 @@ export function ParticipantTab({ registrations }: ParticipantTabProps) {
                       />
                     </TableCell>
                     <TableCell>
-                      <DeleteRegistrationButton
-                        registrationId={registration.id}
-                      />
+                      {registration.sessionType === "OFFLINE"
+                        ? getDietaryLabel(
+                            registration.participantRegistration?.dietaryPreference
+                          )
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <DeleteRegistrationButton registrationId={registration.id} />
                     </TableCell>
                   </TableRow>
                 );

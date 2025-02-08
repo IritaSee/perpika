@@ -29,6 +29,19 @@ import Flag from 'react-world-flags';
 import { Edit, Trash2 } from "lucide-react";
 
 
+// Helper function to map dietary preference (from ParticipantTab)
+function getDietaryLabel(dietaryPreference: string | undefined | null): string {
+    if (!dietaryPreference) {
+        return 'N/A';
+    }
+    const dietaryMap: { [key: string]: string } = {
+        "VEGAN": "Vegan",
+        "HALAL": "Halal"
+    }
+
+    return dietaryMap[dietaryPreference] || 'N/A';
+}
+
 // Helper function to map country name to code (from ParticipantTab)
 function getCountryCode(countryName: string | undefined): string {
   if (!countryName) {
@@ -120,13 +133,14 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              
               <TableHead>Name/Email</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Session</TableHead>
               <TableHead>Affiliation</TableHead>
               <TableHead>Details</TableHead>
               <TableHead>Payment Status</TableHead>
+              <TableHead>Diet</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -144,12 +158,8 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
 
                 return (
                   <TableRow key={registration.id}>
-                    <TableCell className="font-medium">
-                      {registration.id}
-                    </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-x-1">
-                        
                         <div className="font-medium">{name}</div>
                         <Badge>{registration.attendingAs}</Badge>
                       </div>
@@ -188,15 +198,47 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                           <div className="flex items-center gap-x-1">
                             <div>
                               Topic:{" "}
-                              {getTopicLabel(registration.presenterRegistration.topicPreference)}
+                              {getTopicLabel(
+                                registration.presenterRegistration.topicPreference
+                              )}
                             </div>
-                            <Flag code={getCountryCode(registration.presenterRegistration.presenters[0]?.nationality)} className="h-4 w-auto" fallback={<span>{registration.presenterRegistration.presenters[0]?.nationality}</span>} />
+                            <Flag
+                              code={getCountryCode(
+                                registration.presenterRegistration.presenters[0]
+                                  ?.nationality
+                              )}
+                              className="h-4 w-auto"
+                              fallback={
+                                <span>
+                                  {
+                                    registration.presenterRegistration
+                                      .presenters[0]?.nationality
+                                  }
+                                </span>
+                              }
+                            />
                           </div>
-                          <div className="text-muted-foreground">
-                            {registration.presenterRegistration.presentationTitle}
+                          <div className="text-primary">
+                            Judul :
+                            <a
+                              href={
+                                registration.presenterRegistration
+                                  .abstractSubmission
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:underline"
+                            >
+                              {registration.presenterRegistration.presentationTitle}
+                            </a>
                           </div>
-                           <div>
-                            Presenters: {registration.presenterRegistration.presenters.map(p => p.name).join(', ')} ({registration.presenterRegistration.presenters.length})
+                          <div>
+                            Presenters:{" "}
+                            {registration.presenterRegistration.presenters
+                              .map((p) => p.name)
+                              .join(", ")}{" "}
+                            ({registration.presenterRegistration.presenters.length}
+                            )
                           </div>
                         </div>
                       )}
@@ -208,50 +250,79 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                       />
                     </TableCell>
                     <TableCell>
-                    <div className="flex gap-x-1">
-                    <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" size="icon">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Update Abstract</DialogTitle>
-                            <DialogDescription>
-                              Upload a new abstract file (PDF).
-                            </DialogDescription>
-                          </DialogHeader>
-                          <FileUpload
-                            onChange={async (downloadURL) => {
+                      {registration.sessionType === "OFFLINE"
+                        ? getDietaryLabel(
+                            registration.presenterRegistration?.dietaryPreference
+                          )
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-x-1">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="icon">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Update Abstract</DialogTitle>
+                              <DialogDescription>
+                                Upload a new abstract file (PDF).
+                              </DialogDescription>
+                            </DialogHeader>
+                            <FileUpload
+                              onChange={async (downloadURL) => {
                                 if (downloadURL) {
-                                    setLoadingId(registration.presenterRegistration!.id);
-                                    const result = await updateAbstractFile(registration.presenterRegistration!.id, downloadURL);
-                                    if (result.success) {
-                                        alert("Abstract updated successfully!");
-                                    } else {
-                                        alert("Failed to update abstract");
-                                    }
-                                    setLoadingId(null)
+                                  setLoadingId(
+                                    registration.presenterRegistration!.id
+                                  );
+                                  const result = await updateAbstractFile(
+                                    registration.presenterRegistration!.id,
+                                    downloadURL
+                                  );
+                                  if (result.success) {
+                                    alert("Abstract updated successfully!");
+                                  } else {
+                                    alert("Failed to update abstract");
+                                  }
+                                  setLoadingId(null);
                                 }
-                            }}
-                          />
-                            {loadingId === registration.presenterRegistration?.id && (
-                                <p className="text-sm text-muted-foreground">Uploading...</p>
+                              }}
+                            />
+                            {loadingId ===
+                              registration.presenterRegistration?.id && (
+                              <p className="text-sm text-muted-foreground">
+                                Uploading...
+                              </p>
                             )}
-                        </DialogContent>
-                      </Dialog>
-                      <form method="post" action="/api/registrations/delete" onSubmit={(e) => {
-                        if (!confirm("Apakah anda yakin untuk menghapus?")) {
-                          e.preventDefault();
-                        }
-                      }}>
-                        <input type="hidden" name="id" value={registration.id} />
-                        <Button variant="destructive" type="submit" size="icon">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </form>
-                    </div>
+                          </DialogContent>
+                        </Dialog>
+                        <form
+                          method="post"
+                          action="/api/registrations/delete"
+                          onSubmit={(e) => {
+                            if (
+                              !confirm("Apakah anda yakin untuk menghapus?")
+                            ) {
+                              e.preventDefault();
+                            }
+                          }}
+                        >
+                          <input
+                            type="hidden"
+                            name="id"
+                            value={registration.id}
+                          />
+                          <Button
+                            variant="destructive"
+                            type="submit"
+                            size="icon"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </form>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

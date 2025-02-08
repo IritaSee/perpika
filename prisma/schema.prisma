@@ -104,6 +104,7 @@ model Registration {
   registrationType RegistrationType
   proofOfPayment   String              // Store a file URL or path
   paymentStatus    PaymentStatus       @default(PENDING)
+  isEarlyBird      Boolean             @default(false)
 
   // One-to-one relations: depending on the "attendingAs" value, one of these will be present.
   presenterRegistration PresenterRegistration?

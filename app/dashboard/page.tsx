@@ -145,6 +145,49 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             </CardContent>
           </Card>
         </div>
+
+        {/* Dietary Preferences Stats */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Vegan
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {
+                  registrations.filter(
+                    (r) =>
+                      r.sessionType === "OFFLINE" &&
+                      (r.presenterRegistration?.dietaryPreference === "VEGAN" ||
+                        r.participantRegistration?.dietaryPreference === "VEGAN")
+                  ).length
+                }
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Halal
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {
+                  registrations.filter(
+                    (r) =>
+                      r.sessionType === "OFFLINE" &&
+                      (r.presenterRegistration?.dietaryPreference === "HALAL" ||
+                        r.participantRegistration?.dietaryPreference === "HALAL")
+                  ).length
+                }
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Tabs defaultValue="peserta" className="space-y-4">
           <TabsList>
             <TabsTrigger value="peserta">Peserta</TabsTrigger>
