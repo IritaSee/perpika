@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,12 +20,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { updateAbstractReviewedStatus } from "../actions";
 
 interface AbstractTabProps {
   registrations: RegistrationWithRelations[];
 }
 
 export function AbstractTab({ registrations }: AbstractTabProps) {
+  const [loadingId, setLoadingId] = useState<number | null>(null);
   return (
     <Card>
       <CardHeader>
@@ -92,9 +96,30 @@ export function AbstractTab({ registrations }: AbstractTabProps) {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={isReviewed ? "default" : "destructive"}>
-                        {isReviewed ? "Reviewed" : "Not Reviewed"}
-                      </Badge>
+                      <div className="flex items-center gap-x-2">
+                        <Badge variant={isReviewed ? "default" : "destructive"}>
+                          {isReviewed ? "Reviewed" : "Not Reviewed"}
+                        </Badge>
+                        {registration.presenterRegistration && (
+                          <Checkbox
+                            checked={isReviewed}
+                            disabled={loadingId === registration.presenterRegistration.id}
+                            onCheckedChange={async (checked) => {
+                              if (typeof checked === "boolean") {
+                                setLoadingId(registration.presenterRegistration!.id);
+                                const result = await updateAbstractReviewedStatus(
+                                  registration.presenterRegistration!.id,
+                                  checked
+                                );
+                                if (!result.success) {
+                                  alert("Gagal mengubah status review abstrak");
+                                }
+                                setLoadingId(null);
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
