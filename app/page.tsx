@@ -87,18 +87,41 @@ export default function Home() {
                 <p>1 August 2025 - Daejon, South Korea</p>
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Sheet>
                 <SheetTrigger asChild>
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full sm:w-auto"
                   >
-                    <Button size="lg" className="bg-primary hover:bg-primary/90 shadow-lg text-sm sm:text-base">
+                    <Button 
+                      size="lg" 
+                      className="w-full sm:w-auto bg-primary hover:bg-primary/90 shadow-lg text-sm sm:text-base font-semibold px-8 relative overflow-hidden transition-all duration-300 ease-out hover:shadow-primary/30 hover:shadow-xl group"
+                    >
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      <Calendar className="w-4 h-4 mr-2" />
                       VIEW SCHEDULE
                     </Button>
                   </motion.div>
                 </SheetTrigger>
+                <Link href="/register-event" className="w-full sm:w-auto">
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full sm:w-auto"
+                  >
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full sm:w-auto border-2 hover:bg-primary hover:text-white shadow-lg text-sm sm:text-base font-semibold px-8 relative overflow-hidden transition-all duration-300 ease-out hover:border-primary hover:shadow-primary/30 hover:shadow-xl group"
+                    >
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      <Users className="w-4 h-4 mr-2" />
+                      Register Now
+                    </Button>
+                  </motion.div>
+                </Link>
                 <SheetContent side="right" className="w-full sm:max-w-2xl p-0">
                   <div className="h-full flex flex-col">
                     <div className="p-3 sm:p-4 border-b">

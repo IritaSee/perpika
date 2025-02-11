@@ -2,9 +2,7 @@
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { CreditCard } from "lucide-react"
-import { Input } from "@/components/ui/input"
 import { FileUpload } from "@/components/ui/file-upload"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
@@ -14,27 +12,10 @@ import { useState, useEffect, useMemo } from "react"
 import { Card } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
+import { getOnlineParticipantCount, checkEarlyBirdStatus, getRegistrationFee } from "../actions"
 
 // First 35 online participants are free
 const MAX_FREE_ONLINE_PARTICIPANTS = 35
-const CURRENT_ONLINE_PARTICIPANTS = 35 // This should be fetched from the backend
-
-const REGISTRATION_FEES = {
-  [RegistrationType.ONLINE_PARTICIPANT_ONE_DAY]: { 
-    regular: CURRENT_ONLINE_PARTICIPANTS < MAX_FREE_ONLINE_PARTICIPANTS ? 0 : 40000, 
-    earlyBird: CURRENT_ONLINE_PARTICIPANTS < MAX_FREE_ONLINE_PARTICIPANTS ? 0 : 40000 
-  },
-  [RegistrationType.ONLINE_PARTICIPANT_TWO_DAYS]: { 
-    regular: CURRENT_ONLINE_PARTICIPANTS < MAX_FREE_ONLINE_PARTICIPANTS ? 0 : 50000, 
-    earlyBird: CURRENT_ONLINE_PARTICIPANTS < MAX_FREE_ONLINE_PARTICIPANTS ? 0 : 50000 
-  },
-  [RegistrationType.OFFLINE_PARTICIPANT_ONE_DAY]: { regular: 75000, earlyBird: 75000 },
-  [RegistrationType.OFFLINE_PARTICIPANT_TWO_DAYS]: { regular: 100000, earlyBird: 100000 },
-  [RegistrationType.PRESENTER_INDONESIA_STUDENT_ONLINE]: { regular: 100000, earlyBird: 75000 },
-  [RegistrationType.PRESENTER_INDONESIA_STUDENT_OFFLINE]: { regular: 150000, earlyBird: 100000 },
-  [RegistrationType.PRESENTER_FOREIGNER_ONLINE]: { regular: 250000, earlyBird: 175000 },
-  [RegistrationType.PRESENTER_FOREIGNER_OFFLINE]: { regular: 275000, earlyBird: 200000 },
-}
 
 interface RegistrationFeeProps {
   form: UseFormReturn<z.infer<typeof formSchema>>
@@ -51,15 +32,48 @@ const formatPrice = (price: number) => {
   }).format(price)
 }
 
-const isEarlyBird = () => {
-  const earlyBirdEndDate = new Date('2024-03-31T23:59:59')
-  return new Date() <= earlyBirdEndDate
-}
+const useEarlyBirdStatus = () => {
+  const [earlyBirdStatus, setEarlyBirdStatus] = useState<{
+    isEarlyBird: boolean;
+    period: any | null;
+  }>({ isEarlyBird: false, period: null });
+
+  useEffect(() => {
+    const fetchEarlyBirdStatus = async () => {
+      try {
+        const status = await checkEarlyBirdStatus();
+        setEarlyBirdStatus(status);
+      } catch (error) {
+        console.error('Error fetching early bird status:', error);
+      }
+    };
+    fetchEarlyBirdStatus();
+  }, []);
+
+  return earlyBirdStatus;
+};
 
 export function RegistrationFee({ form, attendingAs, sessionType }: RegistrationFeeProps) {
   const [currentFee, setCurrentFee] = useState<number>(0)
-  const [isEarlyBirdPeriod, setIsEarlyBirdPeriod] = useState(isEarlyBird())
   const [days, setDays] = useState<"one" | "two">("one")
+  const [participantCount, setParticipantCount] = useState<number>(0)
+  const { isEarlyBird, period } = useEarlyBirdStatus();
+
+  // Fetch current participant count
+  useEffect(() => {
+    const fetchParticipantCount = async () => {
+      try {
+        const count = await getOnlineParticipantCount();
+        setParticipantCount(count);
+      } catch (error) {
+        console.error('Error fetching participant count:', error);
+      }
+    };
+    
+    if (attendingAs === AttendingAs.PARTICIPANT && sessionType === SessionType.ONLINE) {
+      fetchParticipantCount();
+    }
+  }, [attendingAs, sessionType]);
 
   // Watch for nationality changes when in presenter mode
   const formValues = form.watch()
@@ -79,7 +93,7 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
   useEffect(() => {
     if (!attendingAs || !sessionType) return
 
-    let newRegistrationType: keyof typeof REGISTRATION_FEES | null = null
+    let newRegistrationType: keyof typeof RegistrationType | null = null
     let isFreeRegistration = false
 
     // Watch for form changes
@@ -118,28 +132,44 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
       if (!form.getValues('registrationType')) {
         form.setValue('registrationType', newRegistrationType, { shouldValidate: true })
       }
-      const fees = REGISTRATION_FEES[newRegistrationType]
-      if (fees) {
-        const fee = isEarlyBirdPeriod ? fees.earlyBird : fees.regular
-        setCurrentFee(fee)
-        isFreeRegistration = fee === 0
 
-        // If it's free registration, clear any existing validation errors
-        if (isFreeRegistration) {
-          form.clearErrors('proofOfPayment')
+      const fetchFee = async () => {
+        try {
+          let fee = await getRegistrationFee(newRegistrationType!, isEarlyBird);
+          
+          // Apply free registration for online participants if slots are available
+          if (attendingAs === AttendingAs.PARTICIPANT && 
+              sessionType === SessionType.ONLINE && 
+              participantCount < MAX_FREE_ONLINE_PARTICIPANTS) {
+            fee = 0;
+          }
+          
+          if (typeof fee === 'number') {
+            setCurrentFee(fee);
+            isFreeRegistration = fee === 0;
+
+            // If it's free registration, clear any existing validation errors
+            if (isFreeRegistration) {
+              form.clearErrors('proofOfPayment');
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching registration fee:', error);
         }
-      }
+      };
+
+      fetchFee();
     }
 
     return () => subscription.unsubscribe()
-  }, [attendingAs, sessionType, days, isIndonesianStudent, form, isEarlyBirdPeriod])
+  }, [attendingAs, sessionType, days, isIndonesianStudent, form, isEarlyBird, participantCount])
 
   return (
     <div className="border-b p-6 md:p-8">
-      {isEarlyBirdPeriod && (
+      {isEarlyBird && period && (
         <Card className="mb-4 p-4 bg-green-50 border-green-200">
           <p className="text-green-700 font-medium">
-            Early Bird Registration is Active! (Until March 31, 2024)
+            Early Bird Registration is Active! (Until {new Date(period.endDate).toLocaleDateString()})
           </p>
           <p className="text-green-600 text-sm mt-1">
             Register now to get special early bird pricing
@@ -153,10 +183,10 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
           {sessionType === SessionType.ONLINE && attendingAs === AttendingAs.PARTICIPANT ? (
-            CURRENT_ONLINE_PARTICIPANTS >= MAX_FREE_ONLINE_PARTICIPANTS ? (
+            participantCount >= MAX_FREE_ONLINE_PARTICIPANTS ? (
               "Free registration slots are full. Regular pricing applies."
             ) : (
-              "First 35 online participants register for free!"
+              `${MAX_FREE_ONLINE_PARTICIPANTS - participantCount} free slots remaining!`
             )
           ) : (
             "Select your registration type and upload payment proof"
@@ -216,7 +246,6 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
           <p className="text-sm">Account Holder: [Account Holder Name]</p>
         </Card>
       </div>
-
 
       <FormField
         control={form.control}

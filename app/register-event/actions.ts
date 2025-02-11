@@ -1,8 +1,53 @@
 'use server'
 
 import { db } from '@/lib/db'
+import { SessionType, AttendingAs, RegistrationType } from './constants'
 import { formSchema } from './schemas'
 import { revalidatePath } from 'next/cache'
+
+export async function checkEarlyBirdStatus() {
+  try {
+    const now = new Date();
+    const currentPeriod = await db.earlyBirdPeriod.findFirst({
+      where: {
+        isActive: true,
+        startDate: { lte: now },
+        endDate: { gte: now }
+      },
+      orderBy: {
+        endDate: 'desc'
+      }
+    });
+    return { isEarlyBird: !!currentPeriod, period: currentPeriod };
+  } catch (error) {
+    console.error('Error checking early bird status:', error);
+    return { isEarlyBird: false, period: null };
+  }
+}
+
+export async function getOnlineParticipantCount() {
+  const count = await db.registration.count({
+    where: {
+      AND: [
+        { sessionType: SessionType.ONLINE },
+        { attendingAs: AttendingAs.PARTICIPANT }
+      ]
+    }
+  });
+  return count;
+}
+
+export async function getRegistrationFee(type: keyof typeof RegistrationType, isEarlyBird: boolean) {
+  try {
+    const fee = await db.registrationFee.findFirst({
+      where: { registrationType: type }
+    });
+    return isEarlyBird ? fee?.earlyBirdFee : fee?.regularFee;
+  } catch (error) {
+    console.error('Error fetching registration fee:', error);
+    return null;
+  }
+}
 
 export async function registerEvent(formData: FormData) {
   try {
@@ -20,6 +65,9 @@ export async function registerEvent(formData: FormData) {
     // Validate the data
     const validatedData = formSchema.parse(data)
 
+    // Check early bird status
+    const { isEarlyBird, period } = await checkEarlyBirdStatus();
+
     // Create registration in database with the appropriate related records
     const registration = await db.registration.create({
       data: {
@@ -27,7 +75,9 @@ export async function registerEvent(formData: FormData) {
         sessionType: validatedData.sessionType,
         registrationType: validatedData.registrationType,
         proofOfPayment: validatedData.proofOfPayment,
-        paymentStatus: 'PENDING', // Add paymentStatus and set to PENDING
+        paymentStatus: 'PENDING',
+        isEarlyBird,
+        periodId: period?.id,
 
         // Create the appropriate registration type based on attendingAs
         ...(validatedData.attendingAs === 'PRESENTER' ? {
