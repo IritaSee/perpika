@@ -4,6 +4,7 @@ import "./globals.css"
 import { NextAuthProvider } from "@/providers/next-auth"
 import { Toaster } from "sonner"
 import { NavWrapper } from "@/components/nav-wrapper"
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,8 +22,10 @@ export default function RootLayout({
     <html lang="id">
       <body className={inter.className}>
         <NextAuthProvider>
-          <NavWrapper />
-          {children}
+          <Suspense fallback={<p>Memuat...</p>}>
+            <NavWrapper />
+            {children}
+          </Suspense>
         </NextAuthProvider>
         <Toaster richColors position="top-center" />
       </body>
