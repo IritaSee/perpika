@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Card,
   CardContent,
@@ -19,7 +21,7 @@ import { RegistrationWithRelations } from "../../types";
 import { Badge } from "@/components/ui/badge";
 import Flag from 'react-world-flags';
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { ExportButton } from "./ExportButton";
 
 // Helper function to map dietary preference
 function getDietaryLabel(dietaryPreference: string | undefined | null): string {
@@ -148,10 +150,7 @@ export function ParticipantTab({ registrations }: ParticipantTabProps) {
             <CardTitle>Daftar Peserta</CardTitle>
             <CardDescription>Daftar semua peserta yang telah mendaftar.</CardDescription>
           </div>
-          <Button onClick={handleExport} variant="outline" className="gap-2">
-            <Download className="h-4 w-4" />
-            Export ke CSV
-          </Button>
+          <ExportButton onExport={handleExport} />
         </div>
       </CardHeader>
       <CardContent>

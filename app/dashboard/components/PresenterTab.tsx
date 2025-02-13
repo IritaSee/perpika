@@ -31,7 +31,8 @@ import {
 import { FileUpload } from "@/components/ui/file-upload";
 import { Badge } from "@/components/ui/badge";
 import Flag from "react-world-flags";
-import { Download, Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
+import { ExportButton } from "./ExportButton";
 import {
   Select,
   SelectContent,
@@ -199,10 +200,7 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
               Daftar semua presenter dan kelola Paper mereka.
             </CardDescription>
           </div>
-          <Button onClick={handleExport} variant="outline" className="gap-2">
-            <Download className="h-4 w-4" />
-            Export ke CSV
-          </Button>
+          <ExportButton onExport={handleExport} />
         </div>
       </CardHeader>
       <CardContent>

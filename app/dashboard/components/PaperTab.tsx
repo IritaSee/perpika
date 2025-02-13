@@ -19,7 +19,8 @@ import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Download, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
+import { ExportButton } from "./ExportButton";
 import {
   Select,
   SelectContent,
@@ -94,10 +95,7 @@ export function PaperTab({ registrations }: PaperTabProps) {
               Lihat dan kelola Paper yang dikirimkan oleh presenter.
             </CardDescription>
           </div>
-          <Button onClick={handleExport} variant="outline" className="gap-2">
-            <Download className="h-4 w-4" />
-            Export ke CSV
-          </Button>
+          <ExportButton onExport={handleExport} />
         </div>
       </CardHeader>
       <CardContent>
