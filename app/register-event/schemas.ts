@@ -61,6 +61,8 @@ export const presenterRegistrationSchema = z.object({
     .min(1, { message: "At least one presenter is required" })
     .max(3, { message: "Maximum of three presenters allowed" }),
   email: z.string().email({ message: "Invalid email format" }),
+  password: z.string()
+    .min(6, { message: "Password must be at least 6 characters" }),
   currentStatus: z.enum([
     CurrentStatus.BACHELOR_STUDENT,
     CurrentStatus.MASTER_STUDENT,

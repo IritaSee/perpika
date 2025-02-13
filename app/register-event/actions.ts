@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { SessionType, AttendingAs, RegistrationType } from './constants'
 import { formSchema } from './schemas'
 import { revalidatePath } from 'next/cache'
+import bcrypt from 'bcryptjs'
 
 export async function checkEarlyBirdStatus() {
   try {
@@ -68,8 +69,14 @@ export async function registerEvent(formData: FormData) {
     // Check early bird status
     const { isEarlyBird, period } = await checkEarlyBirdStatus();
 
-    // Create registration in database with the appropriate related records
-    const registration = await db.registration.create({
+        // Hash password if presenter
+        let hashedPassword
+        if (validatedData.attendingAs === 'PRESENTER') {
+          hashedPassword = await bcrypt.hash(validatedData.password, 10)
+        }
+
+        // Create registration in database with the appropriate related records
+        const registration = await db.registration.create({
       data: {
         attendingAs: validatedData.attendingAs,
         sessionType: validatedData.sessionType,
@@ -96,6 +103,15 @@ export async function registerEvent(formData: FormData) {
                   ...presenter,
                   order: index + 1
                 }))
+              },
+              // Create user account for presenter
+              user: {
+                create: {
+                  email: validatedData.email,
+                  password: hashedPassword!,
+                  name: validatedData.presenters[0].name,
+                  role: 'PRESENTER'
+                }
               }
             }
           }

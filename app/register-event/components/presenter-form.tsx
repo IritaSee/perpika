@@ -71,7 +71,7 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Nationality {index === 0 && <span className="text-destructive">*</span>}</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value || ""}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select nationality" />
@@ -139,6 +139,20 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
 
           <FormField
             control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium">Password <span className="text-destructive">*</span></FormLabel>
+                <FormControl>
+                  <Input className="bg-background" type="password" placeholder="Enter password for presenter login" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="affiliation"
             render={({ field }) => (
               <FormItem>
@@ -164,7 +178,7 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-medium">Current Status <span className="text-destructive">*</span></FormLabel>
-                <Select onValueChange={field.onChange} value={field.value || ""}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-background">
                       <SelectValue placeholder="Select your current status" />
@@ -189,7 +203,7 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-medium">Topic Preference <span className="text-destructive">*</span></FormLabel>
-                <Select onValueChange={field.onChange} value={field.value || ""}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-background">
                       <SelectValue placeholder="Select your topic preference" />
@@ -271,7 +285,7 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Dietary Preference <span className="text-destructive">*</span></FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value || ""}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select your dietary preference" />

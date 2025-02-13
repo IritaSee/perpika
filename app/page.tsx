@@ -84,7 +84,7 @@ export default function Home() {
               </h1>
               <div className="flex items-center gap-1 sm:gap-2 justify-center text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 text-muted-foreground/80">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                <p>1 August 2025 - Daejon, South Korea</p>
+                <p>31 July 2025 - Daejon, South Korea</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">

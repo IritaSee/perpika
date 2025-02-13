@@ -41,6 +41,7 @@ export default function RegisterEventForm() {
       proofOfPayment: "",
       presenters: [{ name: "", nationality: "" }],
       email: "",
+      password: "",
       currentStatus: undefined,
       affiliation: "",
       topicPreference: undefined,

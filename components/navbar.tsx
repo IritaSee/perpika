@@ -51,7 +51,7 @@ export function Navbar() {
   }, [])
   
   const navItems = [
-    { name: "About ICONIK", href: "/#about", icon: Info },
+{ name: "Tentang ICONIK", href: "/#about", icon: Info },
     { name: "Topics", href: "/#topics", icon: BookOpen },
     { name: "Registration Fee", href: "/#registration", icon: IconCreditCard },
     { name: "Keynote Speaker", href: "/#keynote", icon: Users },
@@ -174,9 +174,14 @@ export function Navbar() {
           ))}
         </nav>
         <div className="ml-auto hidden md:flex items-center space-x-4">
-          <Link href="/register-event">
+          <Link href="https://docs.google.com/document/d/1lZd0P6Apgwlf6uslicOPaM1F793J3gRx/edit#heading=h.gjdgxs">
+            <Button variant="outline" className="transition-all duration-200 font-medium">
+             Paper Template
+            </Button>
+          </Link>
+          <Link href="/login">
             <Button className="bg-primary hover:bg-primary/90 transition-all duration-200 font-medium">
-              Register Event
+              Login
             </Button>
           </Link>
         </div>
