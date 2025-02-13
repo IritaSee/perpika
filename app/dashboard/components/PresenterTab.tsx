@@ -19,14 +19,28 @@ import { DeleteRegistrationButton } from "./DeleteRegistrationButton";
 import { UpdatePaymentStatusButton } from "./UpdatePaymentStatusButton";
 import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
-import { updateAbstractFile, updateAbstractReviewedStatus } from "../actions";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Badge } from "@/components/ui/badge";
-import Flag from 'react-world-flags';
+import Flag from "react-world-flags";
 import { Edit, Trash2 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { PaperStatus } from "@prisma/client";
+import { updatePaperFile, updatePaperStatus } from "../actions";
 
 
 // Helper function to map dietary preference (from ParticipantTab)
@@ -126,7 +140,7 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
       <CardHeader>
         <CardTitle>Daftar Presenter</CardTitle>
         <CardDescription>
-          Daftar semua presenter dan kelola abstrak mereka.
+          Daftar semua presenter dan kelola Paper mereka.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -134,14 +148,15 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
           <TableHeader>
             <TableRow>
               
-              <TableHead>Name/Email</TableHead>
+              <TableHead className="w-[200px]">Name/Email</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Session</TableHead>
               <TableHead>Affiliation</TableHead>
               <TableHead>Details</TableHead>
               <TableHead>Payment Status</TableHead>
               <TableHead>Diet</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>Paper Status</TableHead>
+              <TableHead className="w-[150px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -163,31 +178,7 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                         <div className="font-medium">{name}</div>
                         <Badge>{registration.attendingAs}</Badge>
                       </div>
-                      <div className="text-sm flex items-center gap-x-1 text-muted-foreground">
-                        {email}
-                        {registration.presenterRegistration && (
-                          <Checkbox
-                            checked={
-                              registration.presenterRegistration
-                                .isAbstractReviewed
-                            }
-                            onCheckedChange={async (checked) => {
-                              if (typeof checked === "boolean") {
-                                const result =
-                                  await updateAbstractReviewedStatus(
-                                    registration.presenterRegistration!.id,
-                                    checked
-                                  );
-                                if (!result.success) {
-                                  alert(
-                                    "Failed to update abstract reviewed status"
-                                  );
-                                }
-                              }
-                            }}
-                          />
-                        )}
-                      </div>
+                      <div className="text-sm text-muted-foreground">{email}</div>
                     </TableCell>
                     <TableCell>{getStatusLabel(details?.currentStatus)}</TableCell>
                     <TableCell>{registration.sessionType}</TableCell>
@@ -223,7 +214,7 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                             <a
                               href={
                                 registration.presenterRegistration
-                                  .abstractSubmission
+                                  .PaperSubmission
                               }
                               target="_blank"
                               rel="noopener noreferrer"
@@ -257,6 +248,43 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                         : "N/A"}
                     </TableCell>
                     <TableCell>
+                      {registration.presenterRegistration && (
+                        <Select
+                          defaultValue={registration.presenterRegistration.paperStatus}
+                          onValueChange={async (value) => {
+                            const result = await updatePaperStatus(
+                              registration.presenterRegistration!.id,
+                              value as PaperStatus
+                            );
+                            if (!result.success) {
+                              alert("Failed to update paper status");
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="border-0 p-0 h-auto w-auto bg-transparent [&>span]:p-0 [&>span]:h-auto">
+                            <div className="flex items-center gap-1">
+                              <Badge
+                                variant={
+                                  registration.presenterRegistration.paperStatus === 'ACCEPTED' ? 'success' :
+                                  registration.presenterRegistration.paperStatus === 'REVISION_REQUESTED' ? 'warning' :
+                                  'secondary'
+                                }
+                              >
+                                {registration.presenterRegistration.paperStatus.replace(/_/g, ' ')}
+                              </Badge>
+                            </div>
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.values(PaperStatus).map((status) => (
+                              <SelectItem key={status} value={status}>
+                                {status.replace(/_/g, " ")}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <div className="flex gap-x-1">
                         <Dialog>
                           <DialogTrigger asChild>
@@ -266,9 +294,9 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>
-                              <DialogTitle>Update Abstract</DialogTitle>
+                              <DialogTitle>Update Paper</DialogTitle>
                               <DialogDescription>
-                                Upload a new abstract file (PDF).
+                                Upload a new Paper file (PDF).
                               </DialogDescription>
                             </DialogHeader>
                             <FileUpload
@@ -277,14 +305,14 @@ export function PresenterTab({ registrations }: PresenterTabProps) {
                                   setLoadingId(
                                     registration.presenterRegistration!.id
                                   );
-                                  const result = await updateAbstractFile(
+                                  const result = await updatePaperFile(
                                     registration.presenterRegistration!.id,
                                     downloadURL
                                   );
                                   if (result.success) {
-                                    alert("Abstract updated successfully!");
+                                    alert("Paper updated successfully!");
                                   } else {
-                                    alert("Failed to update abstract");
+                                    alert("Failed to update Paper");
                                   }
                                   setLoadingId(null);
                                 }

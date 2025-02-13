@@ -1,14 +1,14 @@
 import { getRegistrations } from "../app/dashboard/actions";
 import { RegistrationWithRelations } from "../app/types";
 
-async function checkAbstractUrls() {
+async function checkPaperUrls() {
   const { data: registrations, success } = await getRegistrations({ attendingAs: 'PRESENTER' });
 
   if (success && registrations) {
     registrations.forEach((registration: RegistrationWithRelations) => {
       if (registration.presenterRegistration) {
         console.log(
-          `Registration ID: ${registration.id}, Presenter Registration ID: ${registration.presenterRegistration.id}, Abstract URL: ${registration.presenterRegistration.abstractSubmission}`
+          `Registration ID: ${registration.id}, Presenter Registration ID: ${registration.presenterRegistration.id}, Paper URL: ${registration.presenterRegistration.PaperSubmission}`
         );
       } else {
         console.log(`Registration ID: ${registration.id}, No Presenter Registration`);
@@ -19,4 +19,4 @@ async function checkAbstractUrls() {
   }
 }
 
-checkAbstractUrls();
+checkPaperUrls();

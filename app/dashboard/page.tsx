@@ -29,7 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParticipantTab } from "./components/ParticipantTab";
 import { PresenterTab } from "./components/PresenterTab";
 import { PaymentStatusTab } from "./components/PaymentStatusTab";
-import { AbstractTab } from "./components/AbstractTab";
+import { PaperTab } from "./components/PaperTab";
 import { RegistrationWithRelations } from "../types";
 
 type SearchParams = {
@@ -214,11 +214,11 @@ export default async function DashboardPage({ searchParams }: PageProps) {
               </svg>
               Status Pembayaran
             </TabsTrigger>
-            <TabsTrigger value="abstrak" className="flex items-center gap-2">
+            <TabsTrigger value="Paper" className="flex items-center gap-2">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Abstrak
+              Paper
             </TabsTrigger>
             <TabsTrigger value="early_bird" className="flex items-center gap-2">
               <Timer className="h-4 w-4" />
@@ -234,8 +234,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
           <TabsContent value="status_pembayaran">
             <PaymentStatusTab registrations={registrations} />
           </TabsContent>
-          <TabsContent value="abstrak">
-            <AbstractTab registrations={registrations} />
+          <TabsContent value="Paper">
+            <PaperTab registrations={registrations} />
           </TabsContent>
           <TabsContent value="early_bird">
             <Card>

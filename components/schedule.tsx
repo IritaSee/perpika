@@ -9,8 +9,8 @@ const scheduleItems = [
     content: (
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
-          <h3 className="text-base font-medium text-primary">Abstract Submission</h3>
-          <p className="text-sm text-muted-foreground">Submit your research abstract for initial review. Abstracts should be 250-300 words outlining your research objectives, methodology, and key findings.</p>
+          <h3 className="text-base font-medium text-primary">Paper Submission</h3>
+          <p className="text-sm text-muted-foreground">Submit your research Paper for initial review. Papers should be 250-300 words outlining your research objectives, methodology, and key findings.</p>
         </div>
       </div>
     ),
@@ -21,7 +21,7 @@ const scheduleItems = [
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
           <h3 className="text-base font-medium text-primary">Notification of Submission</h3>
-          <p className="text-sm text-muted-foreground">Authors will be notified about the acceptance of their abstracts. Successful submissions will receive further instructions for full paper preparation.</p>
+          <p className="text-sm text-muted-foreground">Authors will be notified about the acceptance of their Papers. Successful submissions will receive further instructions for full paper preparation.</p>
         </div>
       </div>
     ),

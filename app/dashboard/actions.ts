@@ -10,7 +10,9 @@ import {
   PaymentStatus,
   TopicPreference,
   DietaryPreference,
-  Gender
+  Gender,
+  PaperStatus,
+  Presenter
 } from "@prisma/client"
 
 // Registration CRUD
@@ -164,32 +166,32 @@ export async function deleteRegistration(id: number) {
   }
 }
 
-export async function updateAbstractFile(id: number, abstractSubmission: string) {
+export async function updatePaperFile(id: number, PaperSubmission: string) {
     try {
         const presenterReg = await db.presenterRegistration.update({
             where: { id },
-            data: { abstractSubmission }
+            data: { PaperSubmission }
         });
         revalidatePath("/dashboard");
         return { success: true, data: presenterReg };
     } catch (error: any) {
-        console.error("Failed to update abstract file:", error);
+        console.error("Failed to update Paper file:", error);
         return { success: false, error: error.message };
   }
 }
 
-export async function updateAbstractReviewedStatus(id: number, isAbstractReviewed: boolean) {
-    try {
-        const presenterReg = await db.presenterRegistration.update({
-            where: { id },
-            data: { isAbstractReviewed }
-        });
-        revalidatePath("/dashboard");
-        return { success: true, data: presenterReg };
-    } catch (error: any) {
-        console.error("Failed to update abstract reviewed status:", error);
-        return { success: false, error: error.message };
-    }
+export async function updatePaperStatus(id: number, paperStatus: PaperStatus) {
+  try {
+    const presenterReg = await db.presenterRegistration.update({
+      where: { id },
+      data: { paperStatus },
+    });
+    revalidatePath("/dashboard");
+    return { success: true, data: presenterReg };
+  } catch (error: any) {
+    console.error("Failed to update paper status:", error);
+    return { success: false, error: error.message };
+  }
 }
 
 // Presenter Registration CRUD
@@ -199,7 +201,7 @@ export async function updatePresenterRegistration(id: number, data: {
   affiliation?: string
   topicPreference?: TopicPreference
   presentationTitle?: string
-  abstractSubmission?: string
+  PaperSubmission?: string
   dietaryPreference?: DietaryPreference
 }) {
   try {
@@ -216,10 +218,25 @@ export async function updatePresenterRegistration(id: number, data: {
 }
 
 // Presenter CRUD
+export async function updatePresenterComment(presenterId: number, comment: string) {
+  try {
+    const presenter = await db.presenter.update({
+      where: { id: presenterId },
+      data: { comment }
+    });
+    revalidatePath("/dashboard");
+    return { success: true, data: presenter };
+  } catch (error: any) {
+    console.error("Gagal menyimpan komentar:", error);
+    return { success: false, error: error.message };
+  }
+}
+
 export async function updatePresenter(id: number, data: {
   name?: string
   nationality?: string
   order?: number
+  comment?: string
 }) {
   try {
     const presenter = await db.presenter.update({

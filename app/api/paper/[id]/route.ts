@@ -19,14 +19,14 @@ export async function GET(
       return new NextResponse("Presenter registration not found", { status: 404 });
     }
 
-    if (!presenterRegistration.abstractSubmission) {
-      return new NextResponse("Abstract not submitted", { status: 404 });
+    if (!presenterRegistration.PaperSubmission) {
+      return new NextResponse("Paper not submitted", { status: 404 });
     }
 
-    const response = await fetch(presenterRegistration.abstractSubmission);
+    const response = await fetch(presenterRegistration.PaperSubmission);
 
     if (!response.ok) {
-      return new NextResponse('Failed to fetch abstract from Firebase Storage', { status: response.status });
+      return new NextResponse('Failed to fetch Paper from Firebase Storage', { status: response.status });
     }
 
     const fileBuffer = await response.arrayBuffer();
@@ -41,7 +41,7 @@ export async function GET(
 
 
   } catch (error) {
-    console.error("Error fetching abstract:", error);
+    console.error("Error fetching Paper:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

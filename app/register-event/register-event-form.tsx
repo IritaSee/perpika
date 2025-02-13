@@ -45,7 +45,7 @@ export default function RegisterEventForm() {
       affiliation: "",
       topicPreference: undefined,
       presentationTitle: "",
-      abstractSubmission: "",
+      PaperSubmission: "",
       dietaryPreference: undefined,
       fullName: "",
       gender: undefined,

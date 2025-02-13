@@ -236,10 +236,10 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
 
           <FormField
             control={form.control}
-            name="abstractSubmission"
+            name="PaperSubmission"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-medium">Upload Abstract (PDF) <span className="text-destructive">*</span></FormLabel>
+                <FormLabel className="font-medium">Upload Paper (PDF) <span className="text-destructive">*</span></FormLabel>
                 <FormControl>
                   <FileUpload
                     onChange={(downloadURL) => {
@@ -249,7 +249,7 @@ export function PresenterForm({ form, sessionType }: PresenterFormProps) {
                 </FormControl>
                 {field.value && (
                   <div className="text-sm text-green-600">
-                    Abstract uploaded successfully
+                    Paper uploaded successfully
                   </div>
                 )}
                 <FormMessage />

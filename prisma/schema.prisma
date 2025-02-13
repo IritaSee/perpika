@@ -139,13 +139,19 @@ model PresenterRegistration {
   affiliation            String           // Affiliation/Organization/Institution
   topicPreference        TopicPreference
   presentationTitle      String
-  abstractSubmission     String           // file upload (PDF file path or URL)
+  PaperSubmission     String           // file upload (PDF file path or URL)
   
   // Dietary preference is only applicable if the session type is OFFLINE.
   dietaryPreference      DietaryPreference?
-  isAbstractReviewed     Boolean          @default(false)
+  paperStatus         PaperStatus @default(UNDER_REVIEW)
   // Relation to presenters
   presenters             Presenter[]
+}
+
+enum PaperStatus {
+  UNDER_REVIEW
+  ACCEPTED
+  REVISION_REQUESTED
 }
 
 // Model for individual presenters
@@ -156,6 +162,7 @@ model Presenter {
   name                   String
   nationality            String
   order                  Int                  // To maintain presentation order
+  comment                String?              // Optional comment field for reviewers
 
   @@index([presenterRegistrationId])
 }

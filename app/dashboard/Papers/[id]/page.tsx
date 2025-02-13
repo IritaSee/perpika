@@ -5,7 +5,7 @@ interface PageProps {
   params: { id: string };
 }
 
-export default async function AbstractPage({ params }: PageProps) {
+export default async function PaperPage({ params }: PageProps) {
   const id = parseInt(params.id, 10);
   if (isNaN(id)) {
     notFound();
@@ -15,14 +15,14 @@ export default async function AbstractPage({ params }: PageProps) {
     where: { id },
   });
 
-  if (!presenterRegistration || !presenterRegistration.abstractSubmission) {
+  if (!presenterRegistration || !presenterRegistration.PaperSubmission) {
     notFound();
   }
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <embed
-        src={presenterRegistration.abstractSubmission}
+        src={presenterRegistration.PaperSubmission}
         type="application/pdf"
         style={{ width: '100%', height: '100%' }}
       />

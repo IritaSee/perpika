@@ -86,7 +86,7 @@ export const presenterRegistrationSchema = z.object({
     required_error: "Please select your topic preference",
   }),
   presentationTitle: z.string().min(1, { message: "Presentation title is required" }),
-  abstractSubmission: z.string().min(1, { message: "Abstract must be uploaded" }),
+  PaperSubmission: z.string().min(1, { message: "Paper must be uploaded" }),
   dietaryPreference: z.enum([DietaryPreference.VEGAN, DietaryPreference.HALAL]).optional(),
 })
 

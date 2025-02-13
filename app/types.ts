@@ -3,6 +3,7 @@ import {
   PresenterRegistration,
   ParticipantRegistration,
   Presenter,
+  PaperStatus
 } from "@prisma/client";
 
 export type RegistrationWithRelations = Registration & {

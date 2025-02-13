@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_1 = require("../app/dashboard/actions");
-function checkAbstractUrls() {
+function checkPaperUrls() {
     return __awaiter(this, void 0, void 0, function () {
         var _a, registrations, success;
         return __generator(this, function (_b) {
@@ -48,7 +48,7 @@ function checkAbstractUrls() {
                     if (success && registrations) {
                         registrations.forEach(function (registration) {
                             if (registration.presenterRegistration) {
-                                console.log("Registration ID: ".concat(registration.id, ", Presenter Registration ID: ").concat(registration.presenterRegistration.id, ", Abstract URL: ").concat(registration.presenterRegistration.abstractSubmission));
+                                console.log("Registration ID: ".concat(registration.id, ", Presenter Registration ID: ").concat(registration.presenterRegistration.id, ", Paper URL: ").concat(registration.presenterRegistration.PaperSubmission));
                             }
                             else {
                                 console.log("Registration ID: ".concat(registration.id, ", No Presenter Registration"));
@@ -63,4 +63,4 @@ function checkAbstractUrls() {
         });
     });
 }
-checkAbstractUrls();
+checkPaperUrls();

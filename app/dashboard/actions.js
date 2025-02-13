@@ -42,8 +42,8 @@ exports.getRegistrationById = getRegistrationById;
 exports.updateRegistration = updateRegistration;
 exports.updatePaymentStatus = updatePaymentStatus;
 exports.deleteRegistration = deleteRegistration;
-exports.updateAbstractFile = updateAbstractFile;
-exports.updateAbstractReviewedStatus = updateAbstractReviewedStatus;
+exports.updatePaperFile = updatePaperFile;
+exports.updatePaperReviewedStatus = updatePaperReviewedStatus;
 exports.updatePresenterRegistration = updatePresenterRegistration;
 exports.updatePresenter = updatePresenter;
 exports.deletePresenter = deletePresenter;
@@ -242,7 +242,7 @@ function deleteRegistration(id) {
         });
     });
 }
-function updateAbstractFile(id, abstractSubmission) {
+function updatePaperFile(id, PaperSubmission) {
     return __awaiter(this, void 0, void 0, function () {
         var presenterReg, error_6;
         return __generator(this, function (_a) {
@@ -251,7 +251,7 @@ function updateAbstractFile(id, abstractSubmission) {
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, db_1.db.presenterRegistration.update({
                             where: { id: id },
-                            data: { abstractSubmission: abstractSubmission }
+                            data: { PaperSubmission: PaperSubmission }
                         })];
                 case 1:
                     presenterReg = _a.sent();
@@ -259,14 +259,14 @@ function updateAbstractFile(id, abstractSubmission) {
                     return [2 /*return*/, { success: true, data: presenterReg }];
                 case 2:
                     error_6 = _a.sent();
-                    console.error("Failed to update abstract file:", error_6);
+                    console.error("Failed to update Paper file:", error_6);
                     return [2 /*return*/, { success: false, error: error_6.message }];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-function updateAbstractReviewedStatus(id, isAbstractReviewed) {
+function updatePaperReviewedStatus(id, isPaperReviewed) {
     return __awaiter(this, void 0, void 0, function () {
         var presenterReg, error_7;
         return __generator(this, function (_a) {
@@ -275,7 +275,7 @@ function updateAbstractReviewedStatus(id, isAbstractReviewed) {
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, db_1.db.presenterRegistration.update({
                             where: { id: id },
-                            data: { isAbstractReviewed: isAbstractReviewed }
+                            data: { isPaperReviewed: isPaperReviewed }
                         })];
                 case 1:
                     presenterReg = _a.sent();
@@ -283,7 +283,7 @@ function updateAbstractReviewedStatus(id, isAbstractReviewed) {
                     return [2 /*return*/, { success: true, data: presenterReg }];
                 case 2:
                     error_7 = _a.sent();
-                    console.error("Failed to update abstract reviewed status:", error_7);
+                    console.error("Failed to update Paper reviewed status:", error_7);
                     return [2 /*return*/, { success: false, error: error_7.message }];
                 case 3: return [2 /*return*/];
             }

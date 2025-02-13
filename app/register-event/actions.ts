@@ -88,7 +88,7 @@ export async function registerEvent(formData: FormData) {
               affiliation: validatedData.affiliation,
               topicPreference: validatedData.topicPreference,
               presentationTitle: validatedData.presentationTitle,
-              abstractSubmission: validatedData.abstractSubmission,
+              PaperSubmission: validatedData.PaperSubmission,
               dietaryPreference: validatedData.dietaryPreference,
               // Create related presenters
               presenters: {
