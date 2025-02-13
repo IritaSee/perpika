@@ -58,6 +58,17 @@ export default function ThankYouPage() {
 
         <Card className="border-2 shadow-lg transition-all duration-300 hover:border-primary/20">
           <CardHeader>
+            <h2 className="text-2xl font-bold text-center text-foreground">Presenter Information</h2>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-muted-foreground">
+              If you are a presenter, you can <Link href="/login" className="text-primary underline">log in here</Link> to view the status of your submitted papers and take further actions.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 shadow-lg transition-all duration-300 hover:border-primary/20">
+          <CardHeader>
             <h2 className="text-2xl font-bold text-center text-foreground">
               What's Next?
             </h2>

@@ -31,7 +31,7 @@ import {
 import { FileUpload } from "@/components/ui/file-upload";
 import { Badge } from "@/components/ui/badge";
 import Flag from "react-world-flags";
-import { Edit, Trash2 } from "lucide-react";
+import { Download, Edit, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -135,13 +135,75 @@ interface PresenterTabProps {
 export function PresenterTab({ registrations }: PresenterTabProps) {
   const [loadingId, setLoadingId] = useState<number | null>(null);
 
+  const handleExport = () => {
+    // Prepare CSV headers
+    const headers = [
+      "Name",
+      "Email",
+      "Status",
+      "Session",
+      "Affiliation",
+      "Topic",
+      "Nationality",
+      "Presentation Title",
+      "Paper URL",
+      "Payment Status",
+      "Dietary Preference",
+      "Paper Status"
+    ].join(",");
+
+    // Prepare CSV rows
+    const rows = registrations
+      .filter((r) => r.attendingAs === "PRESENTER")
+      .map((registration) => {
+        const details = registration.presenterRegistration;
+        const presenter = details?.presenters[0];
+        
+        return [
+          presenter?.name || "",
+          details?.email || "",
+          getStatusLabel(details?.currentStatus),
+          registration.sessionType || "",
+          details?.affiliation || "",
+          getTopicLabel(details?.topicPreference),
+          presenter?.nationality || "",
+          details?.presentationTitle || "",
+          details?.PaperSubmission || "",
+          registration.paymentStatus || "",
+          details?.dietaryPreference ? getDietaryLabel(details.dietaryPreference) : "N/A",
+          details?.paperStatus || ""
+        ].map(value => `"${value}"`).join(",");
+      });
+
+    // Combine headers and rows
+    const csv = [headers, ...rows].join("\n");
+
+    // Create and trigger download
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `presenters-${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Daftar Presenter</CardTitle>
-        <CardDescription>
-          Daftar semua presenter dan kelola Paper mereka.
-        </CardDescription>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle>Daftar Presenter</CardTitle>
+            <CardDescription>
+              Daftar semua presenter dan kelola Paper mereka.
+            </CardDescription>
+          </div>
+          <Button onClick={handleExport} variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Export ke CSV
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Table>

@@ -19,7 +19,7 @@ import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -38,13 +38,67 @@ interface PaperTabProps {
 export function PaperTab({ registrations }: PaperTabProps) {
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [comments, setComments] = useState<{[key: number]: string}>({});
+
+  const handleExport = () => {
+    // Prepare CSV headers
+    const headers = [
+      "ID",
+      "Presenters",
+      "Email",
+      "Judul Presentasi",
+      "Paper URL",
+      "Status Paper",
+      "Komentar"
+    ].join(",");
+
+    // Prepare CSV rows
+    const rows = registrations
+      .filter((r) => r.attendingAs === "PRESENTER")
+      .map((registration) => {
+        const details = registration.presenterRegistration;
+        const presenters = details?.presenters.map(p => p.name).join(", ") || "";
+        const comment = details?.presenters[0]?.comment || "";
+        
+        return [
+          registration.id,
+          presenters,
+          details?.email || "",
+          details?.presentationTitle || "",
+          details?.PaperSubmission || "",
+          details?.paperStatus?.replace(/_/g, " ") || "",
+          comment
+        ].map(value => `"${value}"`).join(",");
+      });
+
+    // Combine headers and rows
+    const csv = [headers, ...rows].join("\n");
+
+    // Create and trigger download
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `papers-${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Paper</CardTitle>
-        <CardDescription>
-          Lihat dan kelola Paper yang dikirimkan oleh presenter.
-        </CardDescription>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle>Paper</CardTitle>
+            <CardDescription>
+              Lihat dan kelola Paper yang dikirimkan oleh presenter.
+            </CardDescription>
+          </div>
+          <Button onClick={handleExport} variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Export ke CSV
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Table>
@@ -97,7 +151,7 @@ export function PaperTab({ registrations }: PaperTabProps) {
                               href={`/dashboard/Papers/${registration.presenterRegistration?.id}`}
                             >
                               <Eye className="h-4 w-4 mr-2" />
-                              Lihat Paper
+                              View Paper
                             </Link>
                           </Button>
                         )

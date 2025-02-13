@@ -18,6 +18,8 @@ import { UpdatePaymentStatusButton } from "./UpdatePaymentStatusButton";
 import { RegistrationWithRelations } from "../../types";
 import { Badge } from "@/components/ui/badge";
 import Flag from 'react-world-flags';
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 // Helper function to map dietary preference
 function getDietaryLabel(dietaryPreference: string | undefined | null): string {
@@ -89,11 +91,68 @@ function getStatusLabel(status: string | undefined) {
 }
 
 export function ParticipantTab({ registrations }: ParticipantTabProps) {
+  const handleExport = () => {
+    // Prepare CSV headers
+    const headers = [
+      "Nama",
+      "Email",
+      "Status",
+      "Sesi",
+      "Afiliasi",
+      "Kewarganegaraan",
+      "Kota",
+      "Status Pembayaran",
+      "Preferensi Diet"
+    ].join(",");
+
+    // Prepare CSV rows
+    const rows = registrations
+      .filter((r) => r.attendingAs === "PARTICIPANT")
+      .map((registration) => {
+        const details = registration.participantRegistration;
+        
+        return [
+          details?.fullName || "",
+          details?.email || "",
+          getStatusLabel(details?.currentStatus),
+          registration.sessionType || "",
+          details?.affiliation || "",
+          details?.nationality || "",
+          details?.cityState || "",
+          registration.paymentStatus || "",
+          registration.sessionType === "OFFLINE" 
+            ? getDietaryLabel(details?.dietaryPreference)
+            : "N/A"
+        ].map(value => `"${value}"`).join(",");
+      });
+
+    // Combine headers and rows
+    const csv = [headers, ...rows].join("\n");
+
+    // Create and trigger download
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `peserta-${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Daftar Peserta</CardTitle>
-        <CardDescription>Daftar semua peserta yang telah mendaftar.</CardDescription>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle>Daftar Peserta</CardTitle>
+            <CardDescription>Daftar semua peserta yang telah mendaftar.</CardDescription>
+          </div>
+          <Button onClick={handleExport} variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Export ke CSV
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Table>

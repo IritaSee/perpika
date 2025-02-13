@@ -51,7 +51,7 @@ export function Navbar() {
   }, [])
   
   const navItems = [
-{ name: "Tentang ICONIK", href: "/#about", icon: Info },
+    { name: "About ICONIK", href: "/#about", icon: Info },
     { name: "Topics", href: "/#topics", icon: BookOpen },
     { name: "Registration Fee", href: "/#registration", icon: IconCreditCard },
     { name: "Keynote Speaker", href: "/#keynote", icon: Users },
