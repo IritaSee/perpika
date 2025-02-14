@@ -85,6 +85,8 @@ export async function updateRegistration(
   }
 }
 
+'use server'
+
 export async function updatePaymentStatus(
   id: number,
   paymentStatus: PaymentStatus
