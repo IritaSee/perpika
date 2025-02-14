@@ -154,13 +154,12 @@ export function PaperTab({ registrations }: PaperTabProps) {
                               </Link>
                             </Button>
                             <Button variant="outline" asChild>
-                              <Link
-                                href={`/api/paper/${registration.presenterRegistration?.id}`}
-                                download
+                              <a
+                                href={`/api/paper/${registration.presenterRegistration?.id}?download=true`}
                               >
                                 <Download className="h-4 w-4 mr-2" />
                                 Download
-                              </Link>
+                              </a>
                             </Button>
                           </div>
                         )

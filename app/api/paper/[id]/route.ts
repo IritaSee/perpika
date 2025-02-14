@@ -31,11 +31,16 @@ export async function GET(
 
     const fileBuffer = await response.arrayBuffer();
 
+    const searchParams = request.nextUrl.searchParams;
+    const download = searchParams.get('download') === 'true';
+
     return new NextResponse(fileBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="${presenterRegistration.presentationTitle}.pdf"`
+        'Content-Disposition': download 
+          ? `attachment; filename="${presenterRegistration.presentationTitle}.pdf"`
+          : `inline; filename="${presenterRegistration.presentationTitle}.pdf"`
       }
     });
 
