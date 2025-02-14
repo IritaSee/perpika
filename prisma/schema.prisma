@@ -154,7 +154,7 @@ model PresenterRegistration {
   dietaryPreference      DietaryPreference?
   paperStatus         PaperStatus @default(UNDER_REVIEW)
   // Relation to presenters
-  presenters             Presenter[]
+  presenters             Presenter[] @relation("PresenterToRegistration")
   
   // Relation to User for presenter login
   userId                String?          @unique
@@ -171,7 +171,7 @@ enum PaperStatus {
 model Presenter {
   id                     Int                  @id @default(autoincrement())
   presenterRegistrationId Int
-  presenterRegistration  PresenterRegistration @relation(fields: [presenterRegistrationId], references: [id])
+  presenterRegistration  PresenterRegistration @relation("PresenterToRegistration", fields: [presenterRegistrationId], references: [id], onDelete: Cascade)
   name                   String
   nationality            String
   order                  Int                  // To maintain presentation order
