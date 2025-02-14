@@ -19,7 +19,7 @@ import { RegistrationWithRelations } from "../../types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
+import { Eye, Download } from "lucide-react";
 import { ExportButton } from "./ExportButton";
 import {
   Select,
@@ -142,16 +142,27 @@ export function PaperTab({ registrations }: PaperTabProps) {
                         PaperPath === "test" ? (
                           <p>Paper Not Uploaded</p>
                         ) : (
-                          <Button variant="outline" asChild>
-                            <Link
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              href={`/dashboard/Papers/${registration.presenterRegistration?.id}`}
-                            >
-                              <Eye className="h-4 w-4 mr-2" />
-                              View Paper
-                            </Link>
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button variant="outline" asChild>
+                              <Link
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={`/dashboard/Papers/${registration.presenterRegistration?.id}`}
+                              >
+                                <Eye className="h-4 w-4 mr-2" />
+                                View Paper
+                              </Link>
+                            </Button>
+                            <Button variant="outline" asChild>
+                              <Link
+                                href={`/api/paper/${registration.presenterRegistration?.id}`}
+                                download
+                              >
+                                <Download className="h-4 w-4 mr-2" />
+                                Download
+                              </Link>
+                            </Button>
+                          </div>
                         )
                       ) : (
                         "Tidak ada Paper"

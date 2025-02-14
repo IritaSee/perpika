@@ -67,22 +67,22 @@ export default async function PresenterDashboardPage() {
   const getPaymentStatusColor = (status: PaymentStatus) => {
     switch (status) {
       case "CONFIRMED":
-        return "bg-green-500";
+        return "text-green-500 border-green-200 bg-green-50 dark:bg-green-500/10 dark:border-green-500/20";
       case "REJECTED":
-        return "bg-red-500";
+        return "text-red-500 border-red-200 bg-red-50 dark:bg-red-500/10 dark:border-red-500/20";
       default:
-        return "bg-yellow-500";
+        return "text-yellow-500 border-yellow-200 bg-yellow-50 dark:bg-yellow-500/10 dark:border-yellow-500/20";
     }
   };
 
   const getPaperStatusColor = (status: PaperStatus) => {
     switch (status) {
       case "ACCEPTED":
-        return "bg-green-500";
+        return "text-green-500 border-green-200 bg-green-50 dark:bg-green-500/10 dark:border-green-500/20";
       case "REVISION_REQUESTED":
-        return "bg-yellow-500";
+        return "text-yellow-500 border-yellow-200 bg-yellow-50 dark:bg-yellow-500/10 dark:border-yellow-500/20";
       default:
-        return "bg-blue-500";
+        return "text-blue-500 border-blue-200 bg-blue-50 dark:bg-blue-500/10 dark:border-blue-500/20";
     }
   };
 
@@ -98,43 +98,45 @@ export default async function PresenterDashboardPage() {
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6 rounded-lg mb-8 shadow-sm">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <LayoutDashboard className="h-8 w-8 text-primary" />
+    <div className="container mx-auto py-6">
+      <div className="relative mb-8">
+        <div className="flex h-16 items-center px-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex items-center gap-4">
+            <LayoutDashboard className="h-6 w-6 text-primary" />
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Presenter Dashboard</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-2xl font-semibold tracking-tight">Presenter Dashboard</h1>
+              <p className="text-sm text-muted-foreground">
                 Manage and monitor your paper status
               </p>
             </div>
           </div>
-          <LogoutButton className="flex items-center gap-2 hover:bg-destructive/90 transition-colors" />
+          <div className="ml-auto">
+            <LogoutButton className="gap-2" />
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Presentation Information</CardTitle>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+        <Card className="border shadow-sm transition-all hover:shadow-md">
+          <CardHeader className="space-y-1 pb-4">
+            <CardTitle className="text-xl font-semibold">Presentation Information</CardTitle>
             <CardDescription>Presentation details and paper status</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Presentation Title:</span>
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 pb-2 border-b">
+                <FileText className="h-5 w-5 text-primary/70" />
+                <span className="font-medium">Presentation Title</span>
               </div>
-              <p className="text-sm pl-6">{presentationTitle}</p>
+              <p className="text-sm pl-8 text-muted-foreground">{presentationTitle}</p>
             </div>
             
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Presenters:</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 pb-2 border-b">
+                <Users className="h-5 w-5 text-primary/70" />
+                <span className="font-medium">Presenters</span>
               </div>
-              <ul className="text-sm pl-6 space-y-1">
+              <ul className="text-sm pl-8 space-y-2 text-muted-foreground">
                 {presenters.map((presenter) => (
                   <li key={presenter.id}>
                     {presenter.name} ({presenter.nationality})
@@ -143,56 +145,60 @@ export default async function PresenterDashboardPage() {
               </ul>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <Badge className={getPaperStatusColor(paperStatus)}>
-                  Paper Status: {getPaperStatusText(paperStatus)}
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className={`${getPaperStatusColor(paperStatus)} px-3 py-1`}>
+                  <span className="mr-2">●</span>
+                  {getPaperStatusText(paperStatus)}
                 </Badge>
               </div>
 
               {paperStatus === "REVISION_REQUESTED" && (
-                <RevisionUpload 
-                  userId={user.id}
-                  presenters={presenters}
-                />
+                <div className="bg-muted/30 rounded-lg p-4 border border-muted-foreground/20">
+                  <RevisionUpload 
+                    userId={user.id}
+                    presenters={presenters}
+                  />
+                </div>
               )}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Registration Information</CardTitle>
+        <Card className="border shadow-sm transition-all hover:shadow-md">
+          <CardHeader className="space-y-1 pb-4">
+            <CardTitle className="text-xl font-semibold">Registration Information</CardTitle>
             <CardDescription>Session and payment details</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Session Type:</span>
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 pb-2 border-b">
+                <Calendar className="h-5 w-5 text-primary/70" />
+                <span className="font-medium">Session Type</span>
               </div>
-              <p className="text-sm pl-6">
+              <p className="text-sm pl-8 text-muted-foreground">
                 {registration.sessionType === "ONLINE" ? "Online" : "Offline"}
               </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Building className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Registration Type:</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 pb-2 border-b">
+                <Building className="h-5 w-5 text-primary/70" />
+                <span className="font-medium">Registration Type</span>
               </div>
-              <p className="text-sm pl-6">
+              <p className="text-sm pl-8 text-muted-foreground">
                 {registration.registrationType.replace(/_/g, " ")}
               </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">Payment Status:</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 pb-2 border-b">
+                <Clock className="h-5 w-5 text-primary/70" />
+                <span className="font-medium">Payment Status</span>
               </div>
-              <div className="pl-6">
-                <Badge className={getPaymentStatusColor(registration.paymentStatus)}>
+              <div className="pl-8 flex gap-2">
+                <Badge variant="outline" className={`${getPaymentStatusColor(registration.paymentStatus)} px-3 py-1`}>
+                  <span className="mr-2">●</span>
                   {registration.paymentStatus === "CONFIRMED" 
                     ? "Confirmed" 
                     : registration.paymentStatus === "REJECTED"
@@ -200,7 +206,9 @@ export default async function PresenterDashboardPage() {
                     : "Pending"}
                 </Badge>
                 {registration.isEarlyBird && (
-                  <Badge className="ml-2 bg-purple-500">Early Bird</Badge>
+                  <Badge variant="outline" className="ml-2 text-purple-500 border-purple-200 bg-purple-50 dark:bg-purple-500/10 dark:border-purple-500/20">
+                    Early Bird
+                  </Badge>
                 )}
               </div>
             </div>

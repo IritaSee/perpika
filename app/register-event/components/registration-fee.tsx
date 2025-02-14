@@ -128,10 +128,12 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
     }
 
     if (newRegistrationType) {
-      // Initialize with empty string if no value exists
-      if (!form.getValues('registrationType')) {
-        form.setValue('registrationType', newRegistrationType, { shouldValidate: true })
-      }
+      // Always update registration type when it changes
+      form.setValue('registrationType', newRegistrationType, { 
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
 
       const fetchFee = async () => {
         try {

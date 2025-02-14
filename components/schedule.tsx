@@ -5,23 +5,12 @@ import { CalendarDays } from "lucide-react"
 
 const scheduleItems = [
   {
-    title: "14 Mar - 14 May",
+    title: "14 March – 14 May 2025",
     content: (
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
-          <h3 className="text-base font-medium text-primary">Paper Submission</h3>
-          <p className="text-sm text-muted-foreground">Submit your research Paper for initial review. Papers should be 250-300 words outlining your research objectives, methodology, and key findings.</p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "7-14 May 2025",
-    content: (
-      <div className="prose prose-sm dark:prose-invert">
-        <div className="space-y-1.5">
-          <h3 className="text-base font-medium text-primary">Payment</h3>
-          <p className="text-sm text-muted-foreground">Complete the registration payment to confirm your participation. Different rates apply for online/offline and student/non-student participants.</p>
+          <h3 className="text-base font-medium text-primary">Paper Submission & Payment</h3>
+          <p className="text-sm text-muted-foreground">Submit your research paper (250-300 words) and complete the registration payment. Different rates apply for online/offline and student/non-student participants.</p>
         </div>
       </div>
     ),
@@ -31,19 +20,19 @@ const scheduleItems = [
     content: (
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
-          <h3 className="text-base font-medium text-primary">Notification</h3>
-          <p className="text-sm text-muted-foreground">Authors will be notified about the acceptance of their Papers. Successful submissions will receive further instructions for full paper preparation.</p>
+          <h3 className="text-base font-medium text-primary">Notification of Submission</h3>
+          <p className="text-sm text-muted-foreground">Authors will be notified about the acceptance of their papers and receive further instructions for full paper preparation.</p>
         </div>
       </div>
     ),
   },
   {
-    title: "28 May - 28 June 2025",
+    title: "28 May – 28 Jun 2025",
     content: (
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
-          <h3 className="text-base font-medium text-primary">Full Paper Revision & Resubmit</h3>
-          <p className="text-sm text-muted-foreground">Address reviewer feedback and make necessary improvements to your paper. Ensure all comments are properly addressed before final submission.</p>
+          <h3 className="text-base font-medium text-primary">Full Paper Revision & Submission</h3>
+          <p className="text-sm text-muted-foreground">Address reviewer feedback and submit your revised full paper. Ensure all comments are properly addressed before final submission.</p>
         </div>
       </div>
     ),

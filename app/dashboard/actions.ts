@@ -130,29 +130,37 @@ export async function deleteRegistration(id: number) {
       }
     }
 
+    // Delete in specific order with explicit error handling
     await db.$transaction(async (tx) => {
-      if (registration.presenterRegistration) {
-        // Delete associated presenters FIRST
-        if (registration.presenterRegistration.presenters) {
-          for (const presenter of registration.presenterRegistration.presenters) {
-            await tx.presenter.delete({
-              where: { id: presenter.id }
-            });
-          }
+      try {
+        if (registration.presenterRegistration) {
+          // First delete all presenters
+          await tx.presenter.deleteMany({
+            where: {
+              presenterRegistrationId: registration.presenterRegistration.id
+            }
+          });
+
+          // Then delete the presenter registration
+          await tx.presenterRegistration.delete({
+            where: { id: registration.presenterRegistration.id }
+          });
         }
 
-        await tx.presenterRegistration.delete({
-          where: { id: registration.presenterRegistration.id }
+        if (registration.participantRegistration) {
+          await tx.participantRegistration.delete({
+            where: { id: registration.participantRegistration.id }
+          });
+        }
+
+        // Finally delete the main registration
+        await tx.registration.delete({
+          where: { id }
         });
+      } catch (error) {
+        console.error("Transaction error:", error);
+        throw error; // Re-throw to trigger transaction rollback
       }
-      if (registration.participantRegistration) {
-        await tx.participantRegistration.delete({
-          where: { id: registration.participantRegistration.id }
-        });
-      }
-      await tx.registration.delete({
-        where: { id }
-      });
     });
 
     revalidatePath("/dashboard")
