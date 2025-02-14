@@ -27,6 +27,7 @@ export function UpdatePaymentStatusButton({
     const result = await updatePaymentStatus(registrationId, newStatus);
     if (result.success) {
       setStatus(newStatus);
+      console.log(`Status pembayaran berhasil diubah dari ${status} ke ${newStatus}`);
     } else {
       alert("Gagal memperbarui status pembayaran.");
     }
