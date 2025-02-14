@@ -1,8 +1,8 @@
 "use client";
 import { PaymentStatus } from "@prisma/client";
-import { updatePaymentStatus } from "../actions";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,14 +23,37 @@ export function UpdatePaymentStatusButton({
 }: UpdatePaymentStatusButtonProps) {
   const [status, setStatus] = useState(currentStatus);
 
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   async function updateStatus(newStatus: PaymentStatus) {
-    const result = await updatePaymentStatus(registrationId, newStatus);
-    if (result.success) {
-      setStatus(newStatus);
-      console.log(`Status pembayaran berhasil diubah dari ${status} ke ${newStatus}`);
-    } else {
-      alert("Gagal memperbarui status pembayaran.");
-    }
+    startTransition(async () => {
+      try {
+        const response = await fetch('/api/update-payment-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            registrationId,
+            paymentStatus: newStatus
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          setStatus(newStatus);
+          console.log(`Status pembayaran berhasil diubah dari ${status} ke ${newStatus}`);
+          router.refresh();
+        } else {
+          alert("Gagal memperbarui status pembayaran.");
+        }
+      } catch (error) {
+        console.error("Error updating payment status:", error);
+        alert("Gagal memperbarui status pembayaran.");
+      }
+    });
   }
 
   const statusColors: Record<PaymentStatus, string> = {

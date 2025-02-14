@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -29,7 +30,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PaperStatus } from "@prisma/client";
-import { updatePaperStatus, updatePresenterComment } from "../actions";
 import { Textarea } from "@/components/ui/textarea";
 
 interface PaperTabProps {
@@ -37,7 +37,8 @@ interface PaperTabProps {
 }
 
 export function PaperTab({ registrations }: PaperTabProps) {
-  const [loadingId, setLoadingId] = useState<number | null>(null);
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [comments, setComments] = useState<{[key: number]: string}>({});
 
   const handleExport = () => {
@@ -172,15 +173,31 @@ export function PaperTab({ registrations }: PaperTabProps) {
                         <Select
                           defaultValue={paperStatus}
                           onValueChange={async (value) => {
-                            setLoadingId(registration.presenterRegistration!.id);
-                            const result = await updatePaperStatus(
-                              registration.presenterRegistration!.id,
-                              value as PaperStatus
-                            );
-                            if (!result.success) {
-                              alert("Gagal mengubah status Paper");
-                            }
-                            setLoadingId(null);
+                            startTransition(async () => {
+                              try {
+                                const response = await fetch('/api/update-paper-status', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    id: registration.presenterRegistration!.id,
+                                    paperStatus: value
+                                  }),
+                                });
+
+                                const result = await response.json();
+
+                                if (!result.success) {
+                                  alert("Gagal mengubah status Paper");
+                                } else {
+                                  router.refresh();
+                                }
+                              } catch (error) {
+                                console.error("Error updating paper status:", error);
+                                alert("Gagal mengubah status Paper");
+                              }
+                            });
                           }}
                         >
                           <SelectTrigger className="border-0 p-0 h-auto w-auto bg-transparent [&>span]:p-0 [&>span]:h-auto">
@@ -220,10 +237,32 @@ export function PaperTab({ registrations }: PaperTabProps) {
                           onBlur={async () => {
                             const presenterId = registration.presenterRegistration!.presenters[0].id;
                             const comment = comments[presenterId] || "";
-                            const result = await updatePresenterComment(presenterId, comment);
-                            if (!result.success) {
-                              alert("Gagal menyimpan komentar");
-                            }
+                            
+                            startTransition(async () => {
+                              try {
+                                const response = await fetch('/api/update-presenter-comment', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    presenterId,
+                                    comment
+                                  }),
+                                });
+
+                                const result = await response.json();
+
+                                if (!result.success) {
+                                  alert("Gagal menyimpan komentar");
+                                } else {
+                                  router.refresh();
+                                }
+                              } catch (error) {
+                                console.error("Error updating presenter comment:", error);
+                                alert("Gagal menyimpan komentar");
+                              }
+                            });
                           }}
                           className="min-h-[100px]"
                         />
