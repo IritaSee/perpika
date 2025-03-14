@@ -210,12 +210,12 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
                 1 Day
               </label>
             </div>
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <RadioGroupItem value="two" id="two-days" />
               <label htmlFor="two-days" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 2 Days
               </label>
-            </div>
+            </div> */}
           </RadioGroup>
         </div>
       )}
