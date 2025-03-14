@@ -222,6 +222,66 @@ export default function Home() {
               {/* <h3 className="text-base sm:text-lg font-semibold mb-2"> </h3> */}
               <p className="text-sm sm:text-base text-muted-foreground">Kangwon National University, Chuncheon Campus</p>
               {/* add maps here soon */}
+
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3174.383413993882!2d127.7344213152585!3d37.87834307974599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b6e0c2e0e1d1f%3A0x7b3f7c0d8c7e3d2d!2sKangwon%20National%20University!5e0!3m2!1sen!2skr!4v1634315172790!5m2!1sen!2skr"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+              ></iframe>
+            </AnimatedCard>
+            <AnimatedCard>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm sm:text-base text-muted-foreground">
+                    Traveling from Seoul or Incheon International Airport to Kangwon National University's Chuncheon Campus is convenient, with several public transportation options available.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold mb-2">From Incheon International Airport:</h4>
+                    <ol className="list-decimal pl-5 space-y-3 text-sm sm:text-base text-muted-foreground">
+                      <li>
+                        <strong>Airport Railroad Express (AREX) to Seoul:</strong>
+                        <p>Begin by taking the AREX from Incheon International Airport to either Seoul Station or Cheongnyangni Station. The AREX provides both express and all-stop services, with the express reaching Seoul Station in about 43 minutes.</p>
+                      </li>
+                      <li>
+                        <strong>Transfer to ITX-Cheongchun:</strong>
+                        <p>At Seoul Station, transfer to the ITX-Cheongchun train bound for Chuncheon. Alternatively, if you arrived at Cheongnyangni Station via AREX, you can board the ITX-Cheongchun there. The ITX-Cheongchun offers a comfortable and faster journey compared to regular subway lines, reaching Chuncheon in approximately 68 minutes from Seoul Station.</p>
+                      </li>
+                      <li>
+                        <strong>Arrival at Namchuncheon Station:</strong>
+                        <p>For closer proximity to Kangwon National University, disembark at Namchuncheon Station. This station is often referred to as 'Kangwon Nat'l Univ. station' due to its vicinity to the university.</p>
+                      </li>
+                      <li>
+                        <strong>Local Transit to the University:</strong>
+                        <p>From Namchuncheon Station, the university campus is accessible by a short taxi ride or local bus services.</p>
+                      </li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold mb-2">From Seoul:</h4>
+                    <ol className="list-decimal pl-5 space-y-3 text-sm sm:text-base text-muted-foreground">
+                      <li>
+                        <strong>ITX-Cheongchun from Yongsan or Cheongnyangni Stations:</strong>
+                        <p>Board the ITX-Cheongchun train at either Yongsan or Cheongnyangni Station. This service provides a swift connection to Chuncheon, with the journey to Namchuncheon Station taking approximately 52 minutes from Cheongnyangni.</p>
+                      </li>
+                      <li>
+                        <strong>Alternative via Gyeongchun Line Subway:</strong>
+                        <p>Alternatively, you can take the Gyeongchun Line subway from Sangbong Station in Seoul directly to Namchuncheon Station. This option is integrated into the Seoul Metropolitan Subway system, offering a more economical, albeit longer, journey compared to the ITX-Cheongchun.</p>
+                      </li>
+                      <li>
+                        <strong>Proceed to the University:</strong>
+                        <p>Upon arrival at Namchuncheon Station, local transportation options such as buses or taxis are available to reach the university campus.</p>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </AnimatedCard>
             
             {/* <div className="space-y-4 sm:space-y-6 mt-6 sm:mt-8">
