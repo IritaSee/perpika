@@ -174,9 +174,11 @@ export function Navbar() {
           ))}
         </nav>
         <div className="ml-auto hidden md:flex items-center space-x-4">
-          <Link href="https://docs.google.com/document/d/1lZd0P6Apgwlf6uslicOPaM1F793J3gRx/edit#heading=h.gjdgxs">
+          <Link href="https://docs.google.com/document/d/1lZd0P6Apgwlf6uslicOPaM1F793J3gRx/edit#heading=h.gjdgxs"
+            target="_blank"
+            rel="noopener noreferrer">
             <Button variant="outline" className="transition-all duration-200 font-medium">
-             Paper Template
+            Template
             </Button>
           </Link>
           <Link href="/login">

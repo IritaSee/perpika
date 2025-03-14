@@ -71,20 +71,20 @@ export default function Home() {
       <Section>
         <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-2 sm:px-4 py-12 sm:py-16 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background">
           <div className="space-y-4 sm:space-y-6 md:space-y-8">
-            <Image
+            {/* <Image
               src="/perpika.png"
               alt="ICONIK 2025"
               width={120}
               height={60}
               className="mx-auto rounded-lg sm:w-[150px] md:w-[200px]"
-            />
+            /> */}
             <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
                 International Conference by Indonesian Students in Korea (ICONIK) 2025
               </h1>
               <div className="flex items-center gap-1 sm:gap-2 justify-center text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 text-muted-foreground/80">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                <p>31 July 2025 - Daejon, South Korea</p>
+                <p>1 August 2025 - Chuncheon, South Korea</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -216,14 +216,15 @@ export default function Home() {
               <div className="p-1.5 sm:p-2 bg-primary/10 rounded-full">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-primary" />
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Venue and Accommodation</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Offline Venue</h2>
             </div>
             <AnimatedCard>
-              <h3 className="text-base sm:text-lg font-semibold mb-2">Venue</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Woosong University, Daejon</p>
+              {/* <h3 className="text-base sm:text-lg font-semibold mb-2"> </h3> */}
+              <p className="text-sm sm:text-base text-muted-foreground">Kangwon National University, Chuncheon Campus</p>
+              {/* add maps here soon */}
             </AnimatedCard>
             
-            <div className="space-y-4 sm:space-y-6 mt-6 sm:mt-8">
+            {/* <div className="space-y-4 sm:space-y-6 mt-6 sm:mt-8">
               <h3 className="text-lg sm:text-xl font-semibold text-center">Recommended Accommodations</h3>
               <div className="grid gap-4 sm:gap-6">
                 <AnimatedCard>
@@ -245,7 +246,9 @@ export default function Home() {
                   </div>
                 </AnimatedCard>
               </div>
-            </div>
+            </div> */}
+
+
           </div>
         </section>
       </Section>
@@ -319,47 +322,19 @@ export default function Home() {
                         </thead>
                         <tbody className="divide-y">
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Participant (35 Participants Only)</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Free</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm" rowSpan={2}>Online Participant</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 40,000<br/>(One Day Only)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 50,000<br/>(Two Days)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm" rowSpan={2}>Offline Participant</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 75,000<br/>(One Day Only)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000<br/>(Two Days)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Offline Indonesia Students Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 150,000</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Indonesia Students Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Indonesian Presenter</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 75,000</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000</td>
                           </tr>
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Offline Foreigners Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Others Nationality Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 125,000</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 200,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 275,000</td>
                           </tr>
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Foreigners Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 175,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 250,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Participant</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 50,000</td>
                           </tr>
                         </tbody>
                       </table>
