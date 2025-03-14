@@ -243,10 +243,20 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
       <div className="mb-6">
         <FormLabel>Bank Account Information</FormLabel>
         <Card className="p-4">
-          <p className="text-sm font-medium">Bank: [Bank Name]</p>
-          <p className="text-sm">Account Number: [Account Number]</p>
-          <p className="text-sm">Account Holder: [Account Holder Name]</p>
+          <p className="text-sm font-medium">Bank: 토스뱅크 [Toss Bank]</p>
+          <p className="text-sm">Account Number: 1001-5173-6178</p>
+          <p className="text-sm">Account Holder: Mufidah Imroatul</p>
         </Card>
+        <a 
+      href="https://docs.google.com/document/d/14Ntkx1isrp15-osYuJn0oxv9uPtEG7PcUk7I4os_IqM/edit?usp=sharing"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-primary hover:underline text-sm mt-2 inline-block"
+    >
+     Guide to pay with non-Korean bank account →
+    </a>
+
+
       </div>
 
       <FormField
