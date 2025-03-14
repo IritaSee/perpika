@@ -69,74 +69,82 @@ export default function Home() {
 
       {/* Hero Section */}
       <Section>
-        <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-2 sm:px-4 py-12 sm:py-16 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background">
-          <div className="space-y-4 sm:space-y-6 md:space-y-8">
-            {/* <Image
-              src="/perpika.png"
-              alt="ICONIK 2025"
-              width={120}
-              height={60}
-              className="mx-auto rounded-lg sm:w-[150px] md:w-[200px]"
-            /> */}
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
-                International Conference by Indonesian Students in Korea (ICONIK) 2025
-              </h1>
-              <div className="flex items-center gap-1 sm:gap-2 justify-center text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 text-muted-foreground/80">
-                <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                <p>1 August 2025 - Chuncheon, South Korea</p>
+        <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 py-12 sm:py-16 bg-gradient-to-b from-primary/10 via-background to-background overflow-hidden">
+          {/* Background Elements */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 opacity-10">
+              <Image
+                src="/perpika.png"
+                alt="ICONIK 2025 Background"
+                layout="fill"
+                objectFit="contain"
+                className="scale-[0.7]"
+              />
+            </div>
+           
+            <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background to-transparent"></div>
+          </div>
+          
+          <div className="container relative z-10 max-w-7xl mx-auto px-4">
+            <div className="space-y-8 sm:space-y-12">
+              {/* Main Title */}
+              <div className="space-y-4 sm:space-y-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 leading-tight">
+                  International Conference by Indonesian Students in Korea (ICONIK) 2025
+                </h1>
+                
+                <div className="flex items-center gap-2 justify-center text-lg sm:text-xl md:text-2xl text-muted-foreground">
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  <p>1 August 2025 - Chuncheon, South Korea</p>
+                </div>
+              </div>
+              
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <div className="w-full sm:w-auto">
+                      <Button 
+                        size="lg" 
+                        className="w-full sm:w-auto bg-primary hover:bg-primary/90 shadow-xl text-base font-semibold px-8 py-6 rounded-md"
+                      >
+                        <Calendar className="w-5 h-5 mr-2" />
+                        VIEW SCHEDULE
+                      </Button>
+                    </div>
+                  </SheetTrigger>
+                  <Link href="/register-event" className="w-full sm:w-auto">
+                    <div className="w-full sm:w-auto">
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="w-full sm:w-auto border-2 border-primary/80 hover:bg-primary hover:text-white text-primary shadow-lg text-base font-semibold px-8 py-6 rounded-md"
+                      >
+                        <Users className="w-5 h-5 mr-2" />
+                        Register Now
+                      </Button>
+                    </div>
+                  </Link>
+                  <SheetContent side="right" className="w-full sm:max-w-2xl p-0">
+                    <div className="h-full flex flex-col">
+                      <div className="p-4 sm:p-5 border-b">
+                        <SheetHeader>
+                          <SheetTitle className="text-lg sm:text-xl font-bold">Important Dates</SheetTitle>
+                        </SheetHeader>
+                      </div>
+                      <div className="flex-1 h-[calc(100vh-4rem)]">
+                        <Schedule />
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
+              
+              {/* Countdown Timer with enhanced styling */}
+              <div>
+                <CountdownTimer />
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full sm:w-auto"
-                  >
-                    <Button 
-                      size="lg" 
-                      className="w-full sm:w-auto bg-primary hover:bg-primary/90 shadow-lg text-sm sm:text-base font-semibold px-8 relative overflow-hidden transition-all duration-300 ease-out hover:shadow-primary/30 hover:shadow-xl group"
-                    >
-                      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                      <Calendar className="w-4 h-4 mr-2" />
-                      VIEW SCHEDULE
-                    </Button>
-                  </motion.div>
-                </SheetTrigger>
-                <Link href="/register-event" className="w-full sm:w-auto">
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full sm:w-auto"
-                  >
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="w-full sm:w-auto border-2 hover:bg-primary hover:text-white shadow-lg text-sm sm:text-base font-semibold px-8 relative overflow-hidden transition-all duration-300 ease-out hover:border-primary hover:shadow-primary/30 hover:shadow-xl group"
-                    >
-                      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                      <Users className="w-4 h-4 mr-2" />
-                      Register Now
-                    </Button>
-                  </motion.div>
-                </Link>
-                <SheetContent side="right" className="w-full sm:max-w-2xl p-0">
-                  <div className="h-full flex flex-col">
-                    <div className="p-3 sm:p-4 border-b">
-                      <SheetHeader>
-                        <SheetTitle className="text-lg sm:text-xl">Important Dates</SheetTitle>
-                      </SheetHeader>
-                    </div>
-                    <div className="flex-1 h-[calc(100vh-4rem)]">
-                      <Schedule />
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-            <CountdownTimer />
           </div>
         </section>
       </Section>
