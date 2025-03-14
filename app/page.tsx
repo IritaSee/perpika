@@ -331,20 +331,20 @@ export default function Home() {
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground list-disc pl-4">
-                      <li>Engineering</li>
-                      <li>Health Science</li>
-                      <li>Life Science</li>
-                      <li>Earth Science</li>
-                      <li>Material Science</li>
+                      <li>⚡ Engineering</li>
+                      <li>🏥 Health Science</li>
+                      <li>🧬 Life Science</li>
+                      <li>🌍 Earth Science</li>
+                      <li>🔬 Material Science</li>
                     </ul>
                   </div>
                   <div>
                     <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-muted-foreground list-disc pl-4">
-                      <li>Social, Law, and Political Science</li>
-                      <li>Humanities</li>
-                      <li>Sports and Arts</li>
-                      <li>Business and Public Administration</li>
-                      <li>Education</li>
+                      <li>⚖️ Social, Law, and Political Science</li>
+                      <li>📚 Humanities</li>
+                      <li>🎨 Sports and Arts</li>
+                      <li>💼 Business and Public Administration</li>
+                      <li>🎓 Education</li>
                     </ul>
                   </div>
                 </div>
@@ -377,24 +377,28 @@ export default function Home() {
                           <tr className="border-b">
                             <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Registration Type</th>
                             <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Early Bird Registration Fee</th>
-                            <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Registration Fee</th>
+                            <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Regular Registration Fee</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Indonesian Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 75,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 75,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">
+                              <span className="line-through text-red-500/70">KRW 100,000</span>
+                            </td>
                           </tr>
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Others Nationality Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 125,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 200,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 125,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">
+                              <span className="line-through text-red-500/70">KRW 200,000</span>
+                            </td>
                           </tr>
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Participant</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 50,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 50,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">KRW 50,000</td>
                           </tr>
                         </tbody>
                       </table>
