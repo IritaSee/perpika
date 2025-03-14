@@ -71,20 +71,20 @@ export default function Home() {
       <Section>
         <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-2 sm:px-4 py-12 sm:py-16 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background">
           <div className="space-y-4 sm:space-y-6 md:space-y-8">
-            <Image
+            {/* <Image
               src="/perpika.png"
               alt="ICONIK 2025"
               width={120}
               height={60}
               className="mx-auto rounded-lg sm:w-[150px] md:w-[200px]"
-            />
+            /> */}
             <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
                 International Conference by Indonesian Students in Korea (ICONIK) 2025
               </h1>
               <div className="flex items-center gap-1 sm:gap-2 justify-center text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 text-muted-foreground/80">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
-                <p>31 July 2025 - Daejon, South Korea</p>
+                <p>1 August 2025 - Chuncheon, South Korea</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -216,14 +216,75 @@ export default function Home() {
               <div className="p-1.5 sm:p-2 bg-primary/10 rounded-full">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-primary" />
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Venue and Accommodation</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Offline Venue</h2>
             </div>
             <AnimatedCard>
-              <h3 className="text-base sm:text-lg font-semibold mb-2">Venue</h3>
-              <p className="text-sm sm:text-base text-muted-foreground">Woosong University, Daejon</p>
+              {/* <h3 className="text-base sm:text-lg font-semibold mb-2"> </h3> */}
+              <p className="text-sm sm:text-base text-muted-foreground">Kangwon National University, Chuncheon Campus</p>
+              {/* add maps here soon */}
+
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3174.383413993882!2d127.7344213152585!3d37.87834307974599!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b6e0c2e0e1d1f%3A0x7b3f7c0d8c7e3d2d!2sKangwon%20National%20University!5e0!3m2!1sen!2skr!4v1634315172790!5m2!1sen!2skr"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+              ></iframe>
+            </AnimatedCard>
+            <AnimatedCard>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm sm:text-base text-muted-foreground">
+                    Traveling from Seoul or Incheon International Airport to Kangwon National University's Chuncheon Campus is convenient, with several public transportation options available.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold mb-2">From Incheon International Airport:</h4>
+                    <ol className="list-decimal pl-5 space-y-3 text-sm sm:text-base text-muted-foreground">
+                      <li>
+                        <strong>Airport Railroad Express (AREX) to Seoul:</strong>
+                        <p>Begin by taking the AREX from Incheon International Airport to either Seoul Station or Cheongnyangni Station. The AREX provides both express and all-stop services, with the express reaching Seoul Station in about 43 minutes.</p>
+                      </li>
+                      <li>
+                        <strong>Transfer to ITX-Cheongchun:</strong>
+                        <p>At Seoul Station, transfer to the ITX-Cheongchun train bound for Chuncheon. Alternatively, if you arrived at Cheongnyangni Station via AREX, you can board the ITX-Cheongchun there. The ITX-Cheongchun offers a comfortable and faster journey compared to regular subway lines, reaching Chuncheon in approximately 68 minutes from Seoul Station.</p>
+                      </li>
+                      <li>
+                        <strong>Arrival at Namchuncheon Station:</strong>
+                        <p>For closer proximity to Kangwon National University, disembark at Namchuncheon Station. This station is often referred to as 'Kangwon Nat'l Univ. station' due to its vicinity to the university.</p>
+                      </li>
+                      <li>
+                        <strong>Local Transit to the University:</strong>
+                        <p>From Namchuncheon Station, the university campus is accessible by a short taxi ride or local bus services.</p>
+                      </li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm sm:text-base font-semibold mb-2">From Seoul:</h4>
+                    <ol className="list-decimal pl-5 space-y-3 text-sm sm:text-base text-muted-foreground">
+                      <li>
+                        <strong>ITX-Cheongchun from Yongsan or Cheongnyangni Stations:</strong>
+                        <p>Board the ITX-Cheongchun train at either Yongsan or Cheongnyangni Station. This service provides a swift connection to Chuncheon, with the journey to Namchuncheon Station taking approximately 52 minutes from Cheongnyangni.</p>
+                      </li>
+                      <li>
+                        <strong>Alternative via Gyeongchun Line Subway:</strong>
+                        <p>Alternatively, you can take the Gyeongchun Line subway from Sangbong Station in Seoul directly to Namchuncheon Station. This option is integrated into the Seoul Metropolitan Subway system, offering a more economical, albeit longer, journey compared to the ITX-Cheongchun.</p>
+                      </li>
+                      <li>
+                        <strong>Proceed to the University:</strong>
+                        <p>Upon arrival at Namchuncheon Station, local transportation options such as buses or taxis are available to reach the university campus.</p>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </AnimatedCard>
             
-            <div className="space-y-4 sm:space-y-6 mt-6 sm:mt-8">
+            {/* <div className="space-y-4 sm:space-y-6 mt-6 sm:mt-8">
               <h3 className="text-lg sm:text-xl font-semibold text-center">Recommended Accommodations</h3>
               <div className="grid gap-4 sm:gap-6">
                 <AnimatedCard>
@@ -245,7 +306,9 @@ export default function Home() {
                   </div>
                 </AnimatedCard>
               </div>
-            </div>
+            </div> */}
+
+
           </div>
         </section>
       </Section>
@@ -319,47 +382,19 @@ export default function Home() {
                         </thead>
                         <tbody className="divide-y">
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Participant (35 Participants Only)</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Free</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm" rowSpan={2}>Online Participant</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 40,000<br/>(One Day Only)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 50,000<br/>(Two Days)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm" rowSpan={2}>Offline Participant</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 75,000<br/>(One Day Only)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000<br/>(Two Days)</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Offline Indonesia Students Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 150,000</td>
-                          </tr>
-                          <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Indonesia Students Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Indonesian Presenter</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 75,000</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 100,000</td>
                           </tr>
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Offline Foreigners Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Others Nationality Presenter</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 125,000</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 200,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 275,000</td>
                           </tr>
                           <tr>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Online Foreigners Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 175,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 250,000</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Participant</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">-</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">KRW 50,000</td>
                           </tr>
                         </tbody>
                       </table>
