@@ -3,7 +3,8 @@ import { NextResponse } from "next/server"
 
 export const config = {
   matcher: [
-    "/dashboard/:path*"
+    "/dashboard/:path*",
+    "/register-event/:path*"
   ]
 }
 
@@ -24,3 +25,11 @@ export default withAuth(
     }
   }
 )
+
+export function middleware(request: NextRequest) {
+  // Check if the path is the registration page
+  if (request.nextUrl.pathname.startsWith('/register-event')) {
+    // Redirect to home page or show an error page
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+}
