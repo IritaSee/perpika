@@ -34,8 +34,8 @@ const keynoteSpeakersData = [
     day: "Day 1"
   },
   {
-    name: "Educational & Cultural Attache of Indonesia for ROK",
-    title: "Indonesia Embassy in ROK",
+    name: "Amaliah Fitriah, Ph.D",
+    title: "Educational & Cultural Attache of Indonesia for ROK, Indonesia Embassy in ROK",
     theme: "Role of Students in Strengthening Academic Diplomatic through Science and Culture Exchange",
     image: "/kbri.png", // Placeholder
     day: "Day 1"
