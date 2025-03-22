@@ -119,10 +119,9 @@ export default function Home() {
                         variant="outline" 
                         size="lg" 
                         className="w-full sm:w-auto border-2 border-primary/80 hover:bg-primary/20 text-primary shadow-lg text-base font-semibold px-8 py-6 rounded-md"
-                        disabled
                       >
                         <Users className="w-5 h-5 mr-2" />
-                        Registration Coming Soon
+                        REGISTER NOW
                       </Button>
                     </div>
                   </Link>

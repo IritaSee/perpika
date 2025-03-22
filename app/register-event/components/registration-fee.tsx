@@ -24,7 +24,7 @@ interface RegistrationFeeProps {
 }
 
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('ko-KR', {
     style: 'currency',
     currency: 'KRW',
     minimumFractionDigits: 0,
@@ -104,18 +104,14 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
       }
     })
 
+    // Simplified registration type selection based on new pricing structure
     if (attendingAs === AttendingAs.PARTICIPANT) {
-      if (sessionType === SessionType.ONLINE) {
-        newRegistrationType = days === "one" 
-          ? RegistrationType.ONLINE_PARTICIPANT_ONE_DAY
-          : RegistrationType.ONLINE_PARTICIPANT_TWO_DAYS
-      } else {
-        newRegistrationType = days === "one"
-          ? RegistrationType.OFFLINE_PARTICIPANT_ONE_DAY
-          : RegistrationType.OFFLINE_PARTICIPANT_TWO_DAYS
-      }
+      // All participants have the same fee regardless of online/offline or days
+      newRegistrationType = sessionType === SessionType.ONLINE
+        ? RegistrationType.ONLINE_PARTICIPANT_ONE_DAY
+        : RegistrationType.OFFLINE_PARTICIPANT_ONE_DAY
     } else {
-      // For presenters
+      // For presenters - only depends on nationality and online/offline
       if (sessionType === SessionType.ONLINE) {
         newRegistrationType = isIndonesianStudent
           ? RegistrationType.PRESENTER_INDONESIA_STUDENT_ONLINE
@@ -164,7 +160,7 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
     }
 
     return () => subscription.unsubscribe()
-  }, [attendingAs, sessionType, days, isIndonesianStudent, form, isEarlyBird, participantCount])
+  }, [attendingAs, sessionType, isIndonesianStudent, form, isEarlyBird, participantCount])
 
   return (
     <div className="border-b p-6 md:p-8">
@@ -230,11 +226,11 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
         <div className="text-sm text-muted-foreground">
           {attendingAs === AttendingAs.PARTICIPANT ? (
             <p>
-              {sessionType === SessionType.ONLINE ? 'Online' : 'Offline'} Participant - {days === "one" ? '1 Day' : '2 Days'}
+              Participant ({sessionType === SessionType.ONLINE ? 'Online' : 'Offline'})
             </p>
           ) : (
             <p>
-              {isIndonesianStudent ? 'Indonesian' : 'International'} Presenter - {sessionType === SessionType.ONLINE ? 'Online' : 'Offline'}
+              {isIndonesianStudent ? 'Indonesian' : 'Other Nationality'} Presenter ({sessionType === SessionType.ONLINE ? 'Online' : 'Offline'})
             </p>
           )}
         </div>

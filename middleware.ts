@@ -1,10 +1,9 @@
 import { withAuth } from "next-auth/middleware"
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/register-event/:path*"
+    "/dashboard/:path*"
   ]
 }
 
@@ -26,10 +25,11 @@ export default withAuth(
   }
 )
 
-export function middleware(request: NextRequest) {
-  // Check if the path is the registration page
-  if (request.nextUrl.pathname.startsWith('/register-event')) {
-    // Redirect to home page or show an error page
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-}
+// Registration is now open, so we don't need to redirect anymore
+// export function middleware(request: NextRequest) {
+//   // Check if the path is the registration page
+//   if (request.nextUrl.pathname.startsWith('/register-event')) {
+//     // Redirect to home page or show an error page
+//     return NextResponse.redirect(new URL('/', request.url))
+//   }
+// }

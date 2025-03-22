@@ -1,6 +1,12 @@
 const { PrismaClient, RegistrationType } = require('@prisma/client')
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: "postgresql://neondb_owner:npg_8cVrk0aJYRZl@ep-raspy-scene-a1zrpind-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+    }
+  }
+})
 
 async function createRegistrationFee(data) {
   try {
@@ -24,8 +30,8 @@ async function main() {
     const registrationFees = [
       {
         registrationType: RegistrationType.ONLINE_PARTICIPANT_ONE_DAY,
-        regularFee: 40000,
-        earlyBirdFee: 40000,
+        regularFee: 50000,
+        earlyBirdFee: 50000,
       },
       {
         registrationType: RegistrationType.ONLINE_PARTICIPANT_TWO_DAYS,
@@ -34,13 +40,13 @@ async function main() {
       },
       {
         registrationType: RegistrationType.OFFLINE_PARTICIPANT_ONE_DAY,
-        regularFee: 75000,
-        earlyBirdFee: 75000,
+        regularFee: 50000,
+        earlyBirdFee: 50000,
       },
       {
         registrationType: RegistrationType.OFFLINE_PARTICIPANT_TWO_DAYS,
-        regularFee: 100000,
-        earlyBirdFee: 100000,
+        regularFee: 50000,
+        earlyBirdFee: 50000,
       },
       {
         registrationType: RegistrationType.PRESENTER_INDONESIA_STUDENT_ONLINE,
@@ -49,18 +55,18 @@ async function main() {
       },
       {
         registrationType: RegistrationType.PRESENTER_INDONESIA_STUDENT_OFFLINE,
-        regularFee: 150000,
-        earlyBirdFee: 100000,
+        regularFee: 100000,
+        earlyBirdFee: 75000,
       },
       {
         registrationType: RegistrationType.PRESENTER_FOREIGNER_ONLINE,
-        regularFee: 250000,
-        earlyBirdFee: 175000,
+        regularFee: 200000,
+        earlyBirdFee: 125000,
       },
       {
         registrationType: RegistrationType.PRESENTER_FOREIGNER_OFFLINE,
-        regularFee: 275000,
-        earlyBirdFee: 200000,
+        regularFee: 200000,
+        earlyBirdFee: 125000,
       },
     ]
 
