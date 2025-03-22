@@ -70,21 +70,21 @@ function formatCurrency(amount: number | null): string {
 function getRegistrationFee(registrationType: RegistrationType): number | null {
     switch (registrationType) {
         case RegistrationType.ONLINE_PARTICIPANT_ONE_DAY:
-            return 40000;
+            return 50000;
         case RegistrationType.ONLINE_PARTICIPANT_TWO_DAYS:
             return 50000;
         case RegistrationType.OFFLINE_PARTICIPANT_ONE_DAY:
-            return 75000;
+            return 50000;
         case RegistrationType.OFFLINE_PARTICIPANT_TWO_DAYS:
-            return 100000;
+            return 50000;
         case RegistrationType.PRESENTER_INDONESIA_STUDENT_ONLINE:
             return 100000;
         case RegistrationType.PRESENTER_INDONESIA_STUDENT_OFFLINE:
-            return 150000;
+            return 100000;
         case RegistrationType.PRESENTER_FOREIGNER_ONLINE:
-            return 250000;
+            return 200000;
         case RegistrationType.PRESENTER_FOREIGNER_OFFLINE:
-            return 275000;
+            return 200000;
         default:
             return null; // Unknown registration type
     }

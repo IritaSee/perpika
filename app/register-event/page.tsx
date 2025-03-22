@@ -36,7 +36,7 @@ export default function RegisterEventPage() {
               <div className="flex flex-col items-center gap-2 pt-2">
                 <div className="flex items-center gap-2 text-sm">
                   <CalendarDays className="h-4 w-4 text-primary" />
-                  <span>1 August 2025</span>
+                  <span>31 July 2025</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="h-4 w-4 text-primary" />

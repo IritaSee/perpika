@@ -95,7 +95,7 @@ export default function Home() {
                 
                 <div className="flex items-center gap-2 justify-center text-lg sm:text-xl md:text-2xl text-muted-foreground">
                   <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                  <p>1 August 2025 - Chuncheon, South Korea</p>
+                  <p>31 July 2025 - Chuncheon, South Korea</p>
                 </div>
               </div>
               
