@@ -35,10 +35,10 @@ export const baseSchema = z.object({
   proofOfPayment: z.string()
     .refine((val) => {
       // If the value is empty, it's valid only for free registration
-      if (!val) {
-        // This will be checked in the form context
-        return true;
-      }
+      // if (!val) {
+      //   // This will be checked in the form context
+      //   return true;
+      // }
       // For non-empty values, must be a valid URL
       return val.startsWith('http');
     }, {
