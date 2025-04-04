@@ -147,9 +147,9 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
             isFreeRegistration = fee === 0;
 
             // If it's free registration, clear any existing validation errors
-            if (isFreeRegistration) {
-              form.clearErrors('proofOfPayment');
-            }
+            // if (isFreeRegistration) {
+            //   form.clearErrors('proofOfPayment');
+            // }
           }
         } catch (error) {
           console.error('Error fetching registration fee:', error);
@@ -304,7 +304,8 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
         name="proofOfPayment"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Payment Proof</FormLabel>
+            {/* <FormLabel>Payment Proof</FormLabel> */}
+            <FormLabel className="font-medium">Payment Proof <span className="text-destructive">*</span></FormLabel>
             {!field.value ? (
               <FormControl>
                 <FileUpload
