@@ -15,7 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { getOnlineParticipantCount, checkEarlyBirdStatus, getRegistrationFee } from "../actions"
 
 // First 35 online participants are free
-const MAX_FREE_ONLINE_PARTICIPANTS = 0
+// update: no limit to online participants
+const MAX_FREE_ONLINE_PARTICIPANTS = 999
 
 interface RegistrationFeeProps {
   form: UseFormReturn<z.infer<typeof formSchema>>
