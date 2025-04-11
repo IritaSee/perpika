@@ -185,7 +185,8 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
             participantCount >= MAX_FREE_ONLINE_PARTICIPANTS ? (
               "Free registration slots are full. Regular pricing applies."
             ) : (
-              `${MAX_FREE_ONLINE_PARTICIPANTS - participantCount} free slots remaining!`
+              // `${MAX_FREE_ONLINE_PARTICIPANTS - participantCount} free slots remaining!`
+               "You are classified as early bird registrants. Check your registration type and upload payment proof"
             )
           ) : (
             "Select your registration type and upload payment proof"
