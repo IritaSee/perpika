@@ -137,11 +137,11 @@ export function RegistrationFee({ form, attendingAs, sessionType }: Registration
           let fee = await getRegistrationFee(newRegistrationType!, isEarlyBird);
           
           // Apply free registration for online participants if slots are available
-          if (attendingAs === AttendingAs.PARTICIPANT && 
-              sessionType === SessionType.ONLINE && 
-              participantCount < MAX_FREE_ONLINE_PARTICIPANTS) {
-            fee = 0;
-          }
+          // if (attendingAs === AttendingAs.PARTICIPANT && 
+          //     sessionType === SessionType.ONLINE && 
+          //     participantCount < MAX_FREE_ONLINE_PARTICIPANTS) {
+          //   fee = 0;
+          // }
           
           if (typeof fee === 'number') {
             setCurrentFee(fee);

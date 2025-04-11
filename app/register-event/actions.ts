@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 
 export async function checkEarlyBirdStatus() {
-  try {
+  try { //check if early bird period is active manually
     const now = new Date();
     const currentPeriod = await db.earlyBirdPeriod.findFirst({
       where: {
