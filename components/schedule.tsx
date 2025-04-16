@@ -10,7 +10,7 @@ const scheduleItems = [
       <div className="prose prose-sm dark:prose-invert">
         <div className="space-y-1.5">
           <h3 className="text-base font-medium text-primary">Paper Submission & Payment</h3>
-          <p className="text-sm text-muted-foreground">Submit your research paper (250-300 words) and complete the registration payment. Different rates apply for online/offline and student/non-student participants.</p>
+          <p className="text-sm text-muted-foreground">Submit your research paper and complete the registration payment. Different rates apply for online/offline and student/non-student participants.</p>
         </div>
       </div>
     ),
