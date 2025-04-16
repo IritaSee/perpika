@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { toast } from "sonner"
 
 export function CreateEarlyBirdForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null) // Add form reference
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -35,8 +36,10 @@ export function CreateEarlyBirdForm() {
 
       toast.success('Early bird period created successfully')
       
-      // Reset form
-      event.currentTarget.reset()
+      // Reset form using the ref
+      if (formRef.current) {
+        formRef.current.reset()
+      }
       
       // Refresh the page to show new data
       window.location.reload()
@@ -48,7 +51,7 @@ export function CreateEarlyBirdForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={onSubmit} className="space-y-4">
       <div>
         <label className="text-sm font-medium mb-1 block">
           Start Date
