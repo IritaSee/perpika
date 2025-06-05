@@ -105,15 +105,30 @@ export default function Home() {
                   <SheetTrigger asChild>
                     <div className="w-full sm:w-auto">
                       <Button 
+                        variant="outline" 
                         size="lg" 
-                        className="w-full sm:w-auto bg-primary hover:bg-primary/90 shadow-xl text-base font-semibold px-8 py-6 rounded-md"
+                        className="w-full sm:w-auto border-2 border-primary/80 hover:bg-primary/20 text-primary shadow-lg text-base font-semibold px-8 py-6 rounded-md"
                       >
                         <Calendar className="w-5 h-5 mr-2" />
-                        VIEW SCHEDULE
+                        Schedule
                       </Button>
                     </div>
                   </SheetTrigger>
+
                   <Link href="/register-event" className="w-full sm:w-auto">
+                    <div className="w-full sm:w-auto">
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="w-full sm:w-auto bg-primary shadow-xl text-white font-semibold px-8 py-6 rounded-md"
+                      >
+                        <Users className="w-5 h-5 mr-2" />
+                        REGISTER NOW
+                      </Button>
+                    </div>
+                  </Link>
+                  
+                  <Link href="https://docs.google.com/document/d/12he2inpCHiFIWEG_CuOo4izqokGKMSuWobf7H33YvT0/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                     <div className="w-full sm:w-auto">
                       <Button 
                         variant="outline" 
@@ -121,10 +136,12 @@ export default function Home() {
                         className="w-full sm:w-auto border-2 border-primary/80 hover:bg-primary/20 text-primary shadow-lg text-base font-semibold px-8 py-6 rounded-md"
                       >
                         <Users className="w-5 h-5 mr-2" />
-                        REGISTER NOW
+                        Guideline
                       </Button>
                     </div>
                   </Link>
+
+                  {/* schedule */}
                   <SheetContent side="right" className="w-full sm:max-w-2xl p-0">
                     <div className="h-full flex flex-col">
                       <div className="p-4 sm:p-5 border-b">
@@ -384,29 +401,21 @@ export default function Home() {
                         <thead>
                           <tr className="border-b">
                             <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Registration Type</th>
-                            <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Early Bird Registration Fee</th>
-                            <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Regular Registration Fee</th>
+                            <th className="py-3 sm:py-4 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold">Registration Fee</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y">
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Indonesian Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 75,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">
-                              <span className="line-through text-red-500/70">KRW 100,000</span>
-                            </td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 100,000</td>
                           </tr>
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Others Nationality Presenter</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 125,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">
-                              <span className="line-through text-red-500/70">KRW 200,000</span>
-                            </td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 200,000</td>
                           </tr>
                           <tr>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm">Participant</td>
                             <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm font-medium">KRW 50,000</td>
-                            <td className="py-3 sm:py-4 px-3 sm:px-4 text-xs sm:text-sm text-muted-foreground">KRW 50,000</td>
                           </tr>
                         </tbody>
                       </table>

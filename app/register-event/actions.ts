@@ -69,14 +69,14 @@ export async function registerEvent(formData: FormData) {
     // Check early bird status
     const { isEarlyBird, period } = await checkEarlyBirdStatus();
 
-        // Hash password if presenter
-        let hashedPassword
-        if (validatedData.attendingAs === 'PRESENTER') {
-          hashedPassword = await bcrypt.hash(validatedData.password, 10)
-        }
+    // Hash password if presenter
+    let hashedPassword
+    if (validatedData.attendingAs === 'PRESENTER') {
+      hashedPassword = await bcrypt.hash(validatedData.password, 10)
+    }
 
-        // Create registration in database with the appropriate related records
-        const registration = await db.registration.create({
+    // Create registration in database with the appropriate related records
+    const registration = await db.registration.create({
       data: {
         attendingAs: validatedData.attendingAs,
         sessionType: validatedData.sessionType,
