@@ -20,10 +20,10 @@ const AnimatedCard = ({ children }: { children: ReactNode }) => {
 
 const keynoteSpeakersData = [
   {
-    name: "Prof. Dr. Zainudin Amali, S.E., M.Si ",
-    title: "Deputy President Commissioner of Bank Mandiri",
+    name: "Ministry of Youth and Sport of Indonesia",
+    title: "(confirmed)",
     theme: "Unleashing Youth Potential: Innovation and Creativity for Global Leadership",
-    image: "/zainudin_amali.png", // Placeholder
+    image: "/kemenpora.png", // Placeholder
     day: "Day 1"
   },
   {
@@ -57,7 +57,7 @@ const KeynoteSpeakers = () => {
           <div className="p-1.5 sm:p-2 bg-primary/10 rounded-full">
             <Mic className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Keynote Speakers</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">Speakers</h2>
         </div>
         <div className="space-y-6 sm:space-y-8">
           <div>
