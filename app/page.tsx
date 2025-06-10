@@ -8,6 +8,7 @@ import { Info, MapPin, Target, Users, Calendar, BookOpen, CreditCard, Mic } from
 import Image from "next/image"
 import Link from "next/link"
 import KeynoteSpeakers from "@/components/keynote-speakers"
+import InvitedSpeakers from "@/components/invited-speakers"
 import Schedule from "@/components/schedule"
 import { motion, useScroll, useSpring, useInView, useAnimation } from "framer-motion"
 import { useRef, useEffect, ReactNode } from "react"
@@ -430,6 +431,9 @@ export default function Home() {
 
       {/* Keynote Speaker Section */}
       <KeynoteSpeakers />
+
+      {/* Invited Speaker Section */}
+      <InvitedSpeakers />
 
       {/* Committee Section */}
       <Section>
