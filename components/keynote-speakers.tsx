@@ -29,7 +29,7 @@ const keynoteSpeakersData = [
   {
     name: "Teuku Faris Riandi",
     title: "Commercial Manager Perta Arun Gas, Pertamina Subholding Gas Group",
-    theme: "Youth Innovation for Developing the Renewable Energy's Industry",
+    theme: " Indonesia's Significant Role in Today's Energy Transition",
     image: "/pertamina.png", // Placeholder
     day: "Day 1"
   },
